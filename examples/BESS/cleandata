@@ -1,0 +1,4 @@
+#!/bin/sh
+foamListTimes -rm
+rm 0/ph_rgh
+
