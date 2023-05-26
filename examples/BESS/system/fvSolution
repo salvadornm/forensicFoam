@@ -28,7 +28,7 @@ solvers
     {
         solver              GAMG;
         tolerance           1e-6;
-        relTol              0.1;
+        relTol              1e-3;
         smoother            GaussSeidel;
     };
 
@@ -36,7 +36,7 @@ solvers
     {
         $p_rgh;
         tolerance           1e-6;
-        relTol              0.1; // was 0
+        relTol              1e-3; // was 0
     };
 
     ph_rgh

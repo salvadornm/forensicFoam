@@ -44,7 +44,13 @@ boundaryField
     return1
     {
         type            fixedValue;
-        value           uniform (0.0 4.5 0.0);
+        value           uniform (0.0 4.5 0.0);  // bot +
+    }
+
+    return2
+    {
+        type            fixedValue; 
+        value           uniform (0.0 -4.5 0.0); // top -
     }
 }
 

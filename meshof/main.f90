@@ -96,7 +96,7 @@ program meshof
    z(:) = z(:)/1000.0
 
    ! spacing contant in each direction
-   dx = 30/1000.0   ! 20 mm
+   dx = 40/1000.0   ! 20 mm
    dy = dx
    dz = dx
    constantmesh  = .true.

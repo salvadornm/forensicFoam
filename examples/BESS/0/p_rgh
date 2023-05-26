@@ -38,7 +38,7 @@ boundaryField
         value           $internalField;
     }
 
-    "(inlet|return1)"
+    "(inlet|return1|return2)"
     {
        // type            fixedFluxPressure;
        // value           $internalField;

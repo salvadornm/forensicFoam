@@ -12,8 +12,8 @@
         )
       + thermophysicalTransport->divq(he)
      ==
-        reaction->Qdot()
-      + fvModels.source(rho, he)
+    //    reaction->Qdot()
+       fvModels.source(rho, he)
     );
 
     EEqn.relax();

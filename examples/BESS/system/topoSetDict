@@ -28,8 +28,16 @@ actions
         type    faceSet;
         action  new;
         source  boxToFace;
-        box     (0.480 -0.970 0.7)(0.51 -0.964 0.3);
+        box     (0.4 -0.97 0.3)(0.8 -0.95 0.7);
     } 
+    {
+        name    f2;
+        type    faceSet;
+        action  new;
+        source  boxToFace;
+        box     (0.4  0.78 0.3)(0.8 0.79 0.7);
+    } 
+
 
 
 );

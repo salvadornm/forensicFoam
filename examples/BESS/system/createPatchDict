@@ -48,6 +48,23 @@ patches
         // If constructFrom = set : name of faceSet
         set f1;
    }
+   {
+       // Name of new patch
+       name return2;
+
+       // Dictionary to construct new patch from
+      patchInfo
+      {
+        type patch;
+      }
+
+      // How to construct: either from 'patches' or 'set'
+      constructFrom set;
+
+      // If constructFrom = set : name of faceSet
+      set f2;
+}
+
 
 );
 

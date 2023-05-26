@@ -40,7 +40,7 @@ boundaryField
         type            zeroGradient;
     }
     
-    "(inlet|return1)"
+    "(inlet|return1|return2)"
     {
         type            zeroGradient;
     }
