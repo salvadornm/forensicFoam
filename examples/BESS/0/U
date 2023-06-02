@@ -52,6 +52,20 @@ boundaryField
         type            fixedValue; 
         value           uniform (0.0 -4.5 0.0); // top -
     }
+
+    "(backracksouth1|backracksouth2|backracksouth3)"
+    {
+      //  type            fixedValue;
+      //  value           uniform (0.0 0.01 0.0);  // bot +
+       type            noSlip;
+    }
+
+    backracknorth
+    {
+        type            fixedValue;
+        value           uniform (0.0 -0.1 0.0);  // top -
+    }
+    
 }
 
 

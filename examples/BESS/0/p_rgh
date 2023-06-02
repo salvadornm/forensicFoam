@@ -23,27 +23,37 @@ boundaryField
     "(northbc|southbc|eastbc|westbc|topbc|bottombc)"
     {
         type            fixedFluxPressure;
-        value           $internalField;     
+        value           $internalField;   
+       // type         zeroGradient;  
     }
 
     inner
     {
-        type            fixedFluxPressure;
+       type            fixedFluxPressure;
         value           $internalField;
+      //  type         zeroGradient;  
     }
 
     default
     {
         type            fixedFluxPressure;
         value           $internalField;
+      //  type         zeroGradient;  
+
     }
 
     "(inlet|return1|return2)"
     {
-       // type            fixedFluxPressure;
-       // value           $internalField;
-         type         zeroGradient;
-        //type prghEntrainmentPressure;
+        type            fixedFluxPressure;
+        value           $internalField;
+       //  type         zeroGradient;
+    }
+
+    "(backracksouth1|backracksouth2|backracksouth3)"
+    {
+        type            fixedFluxPressure;
+        value           $internalField;
+       // type            zeroGradient;
     }
 }
 

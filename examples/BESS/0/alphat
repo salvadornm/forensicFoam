@@ -39,6 +39,11 @@ boundaryField
     {
         type            zeroGradient;
     }
+
+    "(backracksouth1|backracksouth2|backracksouth3)"
+    {
+        type            zeroGradient;
+    }
 }
 
 

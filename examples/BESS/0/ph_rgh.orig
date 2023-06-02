@@ -45,6 +45,13 @@ boundaryField
        // value           $internalField;
         type         zeroGradient;
     }
+
+    "(backracksouth1|backracksouth2|backracksouth3)"
+    {
+        type            fixedFluxPressure;
+        value           $internalField;
+       //type            zeroGradient;
+    }
 }
 
 

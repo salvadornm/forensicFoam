@@ -27,8 +27,7 @@ boundaryField
 
     inner
     {
-        type            fixedValue;
-        value           uniform 302;
+        type            zeroGradient;
     }
 
     default
@@ -45,6 +44,13 @@ boundaryField
     "(return1|return2)"
     {        
         type            zeroGradient;
+    }
+
+   "(backracksouth1|backracksouth2|backracksouth3)"
+    {
+        type            fixedValue;
+        value           uniform 308;
+       // type            zeroGradient;
     }
 
 }

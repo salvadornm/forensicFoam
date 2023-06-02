@@ -67,16 +67,33 @@ program meshof
    y0   = 60  !origin of inside coordinates
    side_gap = 192
    y_rack = 725 
-   mid_gap = 300
+   mid_gap = 380
    y(1) = -0.5*ly             !<<---------------
 
-   y(2) = y(1) +  y0 + side_gap  !252
-   y(3) = y(2) +  y_rack
-   y(4) = y(3) +  mid_gap 
-   y(5) = y(4) +  y_rack   
+   !y(2) = y(1) +  y0 + side_gap  !252
+   !y(3) = y(2) +  y_rack
+   
+   y(3) = -0.5*mid_gap
+   y(2) = y(3) - y_rack
+   
+   y(4) = -y(3) 
+   y(5) = -y(2) 
+
+
 
    y(6) = 0.5*ly               !<<---------------
    nvy = 6
+
+   write(*,*) " POINTS IN Y"
+   do j= 1,nvy
+      write(*,*) j,y(j)
+   end do   
+   write(*,*) "1-2  5-6",abs(y(2)-y(1)),abs(y(6)-y(5))
+   write(*,*) " side gap",side_gap
+   write(*,*) " 4-3",y(4)-y(3),mid_gap
+   
+
+   
 
    ! Z
    lz = 2896.0
