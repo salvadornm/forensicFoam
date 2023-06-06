@@ -16,6 +16,7 @@ species
     CO
     H2
     C2H2
+    C2H4
     C2H6
     C3H8    
 );
@@ -201,7 +202,31 @@ C2H2
         H               2;
     }
 }
-
+C2H4
+{
+    specie
+    {
+        molWeight       28.0542;
+    }
+    thermodynamics
+    {
+        Tlow            200;
+        Thigh           3500;
+        Tcommon         1000;
+        highCpCoeffs    ( 2.03611 0.0146454 -6.71078e-06 1.47223e-09 -1.25706e-13 4939.89 10.3054 );
+        lowCpCoeffs     ( 3.9592 -0.00757052 5.7099e-05 -6.91589e-08 2.69884e-11 5089.78 4.09733 );
+    }
+    transport
+    {
+        As              1.67212e-06;
+        Ts              170.672;
+    }
+    elements
+    {
+        C               2;
+        H               4;
+    }
+}
 C2H6
 {
     specie
