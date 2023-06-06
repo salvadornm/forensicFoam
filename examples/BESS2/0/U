@@ -55,23 +55,23 @@ boundaryField
 
     "(backrack1|backrack2|backrack3)"
     {
-      //  type            fixedValue;
-      //  value           uniform (0.0 0.01 0.0);  // bot +
+       type            fixedValue;
+       value           uniform (0.0 0.01 0.0);  // bot +
        type            noSlip;
     }
 
     "(backrack4|backrack5|backrack6)"
     {
-      //  type            fixedValue;
-      //  value           uniform (0.0 -0.01 0.0);  // top -
+        type            fixedValue;
+        value           uniform (0.0 -0.01 0.0);  // top -
         type            noSlip;
     }
 
     hotbattery
     {
-      //  type            fixedValue;
-      //  value           uniform (0.0 0.01 0.0);  // top -
-        type            noSlip;
+       type            fixedValue;
+       value           uniform (0.0 0.1 0.0);  
+      //  type            noSlip;
     }
     
 }
