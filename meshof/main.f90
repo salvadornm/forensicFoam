@@ -18,12 +18,12 @@ program meshof
    integer :: nmask
    integer, allocatable :: vmask_start(:,:),vmask_end(:,:)
 
-   integer :: i,j,k,iaux
+   integer :: i,j,k,ic
 
    ! user vars
    real :: pos_hvac,pos_rack1,x_rack,x_sep
    real :: y0, mid_gap,side_gap,y_rack
-   real :: zhvac,z_rack
+   real :: zhvac,z_rack,xsep_rack_block,x_block
 
    write(*,*) " Starting "
    write(*,*) " __________________________________________ "
@@ -57,9 +57,19 @@ program meshof
    x(7) = x(6) + x_sep
    x(8) = x(7) + x_rack*2     ! rack 4 and 5
    ! HVAC 2 TO DO
+   xsep_rack_block = 146
+   x_block = 1200!1000
+   x(9)  = x(8) + xsep_rack_block ! block
+   x(10) = x(9)  + x_block
+   x(11) = lx  - 985            ! hvac 
    !
-   x(9) = lx                  !<<---------------
-   nvx  = 9
+   x(12) = lx                  !<<---------------
+   nvx  = 12
+
+   write(*,*) " POINTS IN X"
+   do i= 1,nvx
+      write(*,*) i,x(i)
+   end do 
 
    ! Y 
    ly = 2438.0
@@ -69,17 +79,12 @@ program meshof
    y_rack = 725 
    mid_gap = 380
    y(1) = -0.5*ly             !<<---------------
-
-   !y(2) = y(1) +  y0 + side_gap  !252
-   !y(3) = y(2) +  y_rack
    
    y(3) = -0.5*mid_gap
    y(2) = y(3) - y_rack
    
    y(4) = -y(3) 
    y(5) = -y(2) 
-
-
 
    y(6) = 0.5*ly               !<<---------------
    nvy = 6
@@ -88,13 +93,7 @@ program meshof
    do j= 1,nvy
       write(*,*) j,y(j)
    end do   
-   write(*,*) "1-2  5-6",abs(y(2)-y(1)),abs(y(6)-y(5))
-   write(*,*) " side gap",side_gap
-   write(*,*) " 4-3",y(4)-y(3),mid_gap
    
-
-   
-
    ! Z
    lz = 2896.0
 
@@ -113,7 +112,7 @@ program meshof
    z(:) = z(:)/1000.0
 
    ! spacing contant in each direction
-   dx = 40/1000.0   ! 20 mm
+   dx = 40/1000.0   ! 30 mm
    dy = dx
    dz = dx
    constantmesh  = .true.
@@ -121,8 +120,8 @@ program meshof
    ! masking
    mask=.true.
    ! number of masks regions
-   ! hvac(1) + racks(6)
-   nmask = 7
+   ! hvac1 + racks(6) + 2 blocks + hvac2
+   nmask = 1 + 6 + 2 +1
    ! allocate space for masks
    allocate (vmask_start(nmask,3),vmask_end(nmask,3))
    
@@ -159,8 +158,26 @@ program meshof
       vmask_end(im,3)   = 3
    end do
 
-   !===============================================
+   ! BLOCKS  (masks 8-9)
+   do im = 8,9
+      ic = im - 8 ! 0 and 1
+      vmask_start(im,1) = 9  !i
+      vmask_end(im,1)   = 10
+      vmask_start(im,2) = 2 + ic*2 
+      vmask_end(im,2)   = 3 + ic*2               
+      vmask_start(im,3) = 1  !k
+      vmask_end(im,3)   = 3
+   end do
+   im = 10
+   ! HVAC 2
+   vmask_start(im,1) = 11  !i
+   vmask_end(im,1)   = 12
+   vmask_start(im,2) = 2 
+   vmask_end(im,2)   = 5             
+   vmask_start(im,3) = 1  !k
+   vmask_end(im,3)   = 2
 
+   !===============================================
 
    ! from vertices array create list
    call create_listvtx(listv,x,y,z,nvx,nvy,nvz)
@@ -285,7 +302,6 @@ program meshof
    write(*,*) "                    ... NO ERRORS"
    
 
-   
    if (mask) then
       write(*,*) " Masking blocks.."
       ! detect block to eliminate
@@ -418,7 +434,7 @@ program meshof
             end if               
             if ((i < nbx) .and.( bmat(i+1,j,k)%active)) then  ! add east
                ifacbc(ieast) = ifacbc(ieast) + 1
-               ifac = ifacbc(iwest)
+               ifac = ifacbc(ieast)
                ibface%f(ifac,ieast) = bmat(i,j,k)%east
                ibface%nfac(ieast) = ifac               
             end if               
