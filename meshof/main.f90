@@ -112,7 +112,7 @@ program meshof
    z(:) = z(:)/1000.0
 
    ! spacing contant in each direction
-   dx = 40/1000.0   ! 30 mm
+   dx = 30/1000.0   ! 30 mm
    dy = dx
    dz = dx
    constantmesh  = .true.

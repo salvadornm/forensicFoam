@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "combustionproperties": "cpp",
+        "p_rgh": "cpp",
+        "controldict": "cpp"
+    }
+}
