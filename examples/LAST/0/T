@@ -59,6 +59,12 @@ boundaryField
         value           uniform 308.15;
     }
 
+    "fan.*"
+    {
+        type            zeroGradient;
+       // type            fixedValue;
+       // value           uniform 354.15; // provisional
+    }
 
 
 }

@@ -38,46 +38,61 @@ boundaryField
     inlet
     {
         type            fixedValue;
-        value           uniform (9.5 0.0 0.0);
+        value           uniform (7.75 0.0 0.0);
     }
 
     inlet2
     {
         type            fixedValue;
-        value           uniform (-9.5 0.0 0.0);
+        value           uniform (-7.75 0.0 0.0);
     }
 
    "(return1a|return1b|return3a|return3b)"
     {
         type            fixedValue;
-        value           uniform (0.0 4.5 0.0);  // bot +
+        value           uniform (0.0 6.6 0.0);  // bot +
     }
 
    "(return2a|return2b|return4a|return4b)"
     {
         type            fixedValue; 
-        value           uniform (0.0 -4.5 0.0); // top -
+        value           uniform (0.0 -6.6 0.0); // top -
     }
 
-    "(backrack1|backrack2|backrack3)"
+    "(backrack1|backrack2)"
     {
-       type            fixedValue;
-       value           uniform (0.0 0.05 0.0);  // bot +
+        type            flowRateInletVelocity;
+        volumetricFlowRate    constant  0.52;
+        value           uniform (0 0 0);    
+    }
+
+    "(backrack3|backrack4|backrack5|backrack6)"
+    {
+        type            flowRateInletVelocity;
+        volumetricFlowRate    constant  1.04;
+        value           uniform (0 0 0);    
+    }
+
+    // "backrack.*"
+    // {
+    //    type            noSlip;
+    // }
+
+    
+    hotbattery
+    {
+      // type            fixedValue;
+      // value           uniform (0.0 0.1 0.0);  
        type            noSlip;
     }
 
-    "(backrack4|backrack5|backrack6)"
+    "fan.*"
     {
-        type            fixedValue;
-        value           uniform (0.0 -0.05 0.0);  // top -
-        type            noSlip;
-    }
+     type            flowRateInletVelocity;
+     volumetricFlowRate    constant -0.02; // m3/s, negative means out domain
+     value           uniform (0 0 0);
 
-    hotbattery
-    {
-       type            fixedValue;
-       value           uniform (0.0 0.5 0.0);  
-      //  type            noSlip;
+//       type            noSlip;
     }
     
 }

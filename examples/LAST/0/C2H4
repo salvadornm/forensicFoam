@@ -47,10 +47,16 @@ boundaryField
 
      hotbattery
     {
-      //  type            zeroGradient;
-        type            fixedValue;
-        value           uniform 0.0659;
+       type            zeroGradient;
+     //   type            fixedValue;
+     //   value           uniform 0.0659;
     } 
+ 
+    "fan.*"
+    {
+        type            zeroGradient;
+    }
+
 }
 
 

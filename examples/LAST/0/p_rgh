@@ -42,7 +42,7 @@ boundaryField
 
     }
 
-     "(inlet|inlet2|return1|return2|return3|return4)"
+    "(inlet|inlet2|return1a|return1b|return2a|return2b|return3a|return3b|return4a|return4b)"
     {
         type            fixedFluxPressure;
         value           $internalField;
@@ -62,6 +62,14 @@ boundaryField
         value           $internalField;
        // type            zeroGradient;
     }
+
+    "fan.*"
+    {
+        //type            calculated;
+        //value           $internalField; 
+        type zeroGradient;
+    }
+    
 }
 
 

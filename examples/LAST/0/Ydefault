@@ -35,12 +35,12 @@ boundaryField
         type            zeroGradient;
     }
 
-   "(inlet|inlet2|return1|return2|return3|return4)"
+    "(inlet|inlet2|return1a|return1b|return2a|return2b|return3a|return3b|return4a|return4b)"
     {
         type            zeroGradient;
     }
 
-    "(backrack1|backrack2|backrack3|backrack4|backrack5|backrack6)"
+    "backrack.*"
     {
         type            zeroGradient;
     }
@@ -51,6 +51,11 @@ boundaryField
         type            fixedValue;
         value           uniform 0.0;
     } 
+    "fan.*"
+    {
+        type            zeroGradient;
+    }
+    
 }
 
 

@@ -11,7 +11,7 @@ implicit none
   character*8, parameter :: cnorth="northbc",csouth="southbc",ctop="topbc",cbot="bottombc"
   character*8, parameter :: ceast ="eastbc" ,cwest ="westbc"
 
-  integer,parameter :: iovtx=77,iofac=79,ioblck=78
+  integer,parameter :: iovtx=77,iofac=79,ioblck=78,ioTopo=65,ioPatch=66
 
 
   type vtx
@@ -50,6 +50,12 @@ implicit none
     integer :: nfaces,nboundaries       
   end type blocklist
 
+
+  type toposet
+    character*8 :: name,patchname
+    real :: box1(3),box2(3)
+    integer :: tipe,action,source
+  end type toposet
 
   integer, allocatable, private :: connect(:,:,:)
 
@@ -297,7 +303,7 @@ implicit none
 
   end subroutine  export_listfaces
   ! -----------------------------------------------------
-  ! export nwely created face list to unit OpenFOAM style (hence the -1)
+  ! export newly created face list to unit OpenFOAM style (hence the -1)
   ! -----------------------------------------------------
   subroutine export_newfaces(unit,lfac,bcname)
 
@@ -326,8 +332,69 @@ implicit none
     write(unit,*) ");"    
 
   end subroutine  export_newfaces
+  ! -----------------------------------------------------
+  ! export topoSet list to unit OpenFOAM style 
+  ! -----------------------------------------------------
+  subroutine export_faceSet(unit,set)
+
+    implicit none
+ 
+    integer, intent(in) :: unit
+    type(toposet),intent(in) :: set
+        
+    write(unit,*) "  {   "
+    write(unit,*) "name    ",trim(set%name)," ;"
+    write(unit,*) "type    faceSet;"
+    write(unit,*) "action  new;"
+    write(unit,*) "source  boxToFace;" 
+    write(unit,'(A,3F10.4,A,3F10.4,A)') " box (",set%box1(1:3)," )(",set%box2(1:3)," );"
+    write(unit,*) "  }   "
+    write(unit,*) "     "
+    
+  end subroutine   export_faceSet
+  ! -----------------------------------------------------
+  ! export topoSet list to unit OpenFOAM style 
+  ! -----------------------------------------------------
+  subroutine export_facePatch(unit,set)
+
+    implicit none
+ 
+    integer, intent(in) :: unit
+    type(toposet), intent(in) :: set
+        
+    write(unit,*) " {   "
+    write(unit,*) "name    ",trim(set%patchname)," ;"
+    write(unit,*) "patchInfo"
+    write(unit,*) "  {   "
+    write(unit,*) "type patch;"
+    write(unit,*) "  }   "
+    write(unit,*) "constructFrom set;" 
+    write(unit,*) "set  ",trim(set%name),";"
+    write(unit,*) " }   "
+    write(unit,*) "     "
+    
+  end subroutine   export_facePatch
 
 
+  ! -----------------------------------------------------
+  !  name and integer return8
+  ! -----------------------------------------------------
+  function setname(name,aux) result(sname)
+
+    implicit none
+
+    integer, intent(in) :: aux
+    character*6, intent(in) :: name
+    character*8 :: sname
+    !
+    character*6 ::str1
+
+    write(str1, '(i0)') aux
+    sname = trim(name) // trim(adjustl(str1)) 
+      
+  end function  setname
+
+  
 
 
 end module ofgeom

@@ -35,7 +35,7 @@ boundaryField
         type            zeroGradient;
     }
 
-     "(inlet|inlet2|return1|return2|return3|return4)"
+    "(inlet|inlet2|return1a|return1b|return2a|return2b|return3a|return3b|return4a|return4b)"
     {
         type            zeroGradient;
     }
@@ -47,10 +47,15 @@ boundaryField
 
      hotbattery
     {
-      //  type            zeroGradient;
-        type            fixedValue;
-        value           uniform 0.6256;
+        type            zeroGradient;
+      //  type            fixedValue;
+      //  value           uniform 0.6256;
     } 
+
+    "fan.*"
+    {
+        type            zeroGradient;
+    }
 }
 
 

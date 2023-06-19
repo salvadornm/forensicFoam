@@ -14,16 +14,20 @@ program meshof
    type(facelist) :: bcface,ibface
    type(blocklist) ::listb
 
-   logical :: constantmesh,check1,check2,mask
-   integer :: nmask
-   integer, allocatable :: vmask_start(:,:),vmask_end(:,:)
+   type(toposet), allocatable :: foam_toposet(:)
 
-   integer :: i,j,k,ic
+   logical :: constantmesh,check1,check2,mask, create_topoSet
+   integer :: nmask=0,ntopoSet=0
+   integer, allocatable :: vmask_start(:,:),vmask_end(:,:)
+   character*6 :: auxname,auxname2
+
+   integer :: i,j,k,ic,is,js,i_rack
 
    ! user vars
-   real :: pos_hvac,pos_rack1,x_rack,x_sep
-   real :: y0, mid_gap,side_gap,y_rack
-   real :: zhvac,z_rack,xsep_rack_block,x_block
+   real :: pos_hvac,pos_rack1,x_rack,x_sep,dbattery_x,dbattery_y
+   real :: y0, mid_gap,side_gap,y_rack,pos_rack2,pos_rack4,pos_mod
+   real :: zhvac,z_rack,xsep_rack_block,x_block,Lbattery,Lfan,Lbat_y
+   real :: xtopo(100,3),pos_modulex,pos_moduley,pos_set,dx0,pos_rack(5)
 
    write(*,*) " Starting "
    write(*,*) " __________________________________________ "
@@ -34,6 +38,7 @@ program meshof
    z(:) = 0.0
 
    mask = .false.
+   create_topoSet = .false.
 
    ! vtxmatrix  (mm)
    write(*,*) " Creating vtx ..."
@@ -47,14 +52,19 @@ program meshof
    x_rack    =  1368
    x_sep     =  410
 
+   Lbattery  = x_rack/3.0
+   Lfan = 100
+
    x(1) = 0.0                 !<<---------------
    
    x(2) =  pos_hvac           ! hvac 
    x(3) =  pos_rack1
    x(4) = x(3) + x_rack       ! rack 1 
    x(5) = x(4) + x_sep
+   pos_rack2 = x(5)
    x(6) = x(5) + x_rack*2     ! rack 2 and 3
    x(7) = x(6) + x_sep
+   pos_rack4 = x(7)
    x(8) = x(7) + x_rack*2     ! rack 4 and 5
    ! HVAC 2 TO DO
    xsep_rack_block = 146
@@ -112,19 +122,26 @@ program meshof
    z(:) = z(:)/1000.0
 
    ! spacing contant in each direction
-   dx = 30/1000.0   ! 30 mm
+   dx0 = 40.0 !  40 m
+
+
+   dx = dx0/1000.0   
    dy = dx
    dz = dx
    constantmesh  = .true.
-     
+  
    ! masking
    mask=.true.
+
+   if (mask) write(*,*) " Masking blocks ...   "
    ! number of masks regions
    ! hvac1 + racks(6) + 2 blocks + hvac2
    nmask = 1 + 6 + 2 +1
    ! allocate space for masks
    allocate (vmask_start(nmask,3),vmask_end(nmask,3))
-   
+
+   if (mask) write(*,*)  "                    ... DONE",nmask
+    
    ! vertex index that define contiguous mask
    
    ! HVAC
@@ -176,6 +193,104 @@ program meshof
    vmask_end(im,2)   = 5             
    vmask_start(im,3) = 1  !k
    vmask_end(im,3)   = 2
+
+   create_topoSet = .true.
+
+   ntopoSet  = 26*5*2
+
+   allocate( foam_toposet(ntopoSet)  )
+
+   ! racks 1 to 3
+   Lfan = 100
+   Lbat_y = 115
+
+  
+
+   write(*,*) "dxloc=",dx0," pos_set",pos_set
+
+   auxname = "tfan"
+   auxname2 = "fan"  !<---------- mpatch name
+
+   dbattery_x = Lbattery
+   dbattery_y = z_rack/9.0
+
+   ! rack position
+   pos_rack(1) = pos_rack1 
+   pos_rack(2) = pos_rack2
+   pos_rack(3) = pos_rack2 + x_rack
+   pos_rack(4) = pos_rack4 
+   pos_rack(5) = pos_rack4 + x_rack
+   
+   ! Racks 1-5
+   im = 0
+   do i_rack = 1,5 ! was 5
+      pos_mod = pos_rack(i_rack)
+      ! SOUTH
+      pos_set =  -0.5*mid_gap - y_rack  
+      do js = 1,9
+      do is = 1,3      
+         if ((is + js) > 2) then
+            im = im + 1         
+            pos_modulex =  pos_mod + 0.5*dbattery_x + (is -1)*dbattery_x
+            pos_moduley =  0.5*dbattery_y + (js -1)*dbattery_y
+            foam_toposet(im)%box1(1) = pos_modulex - Lfan/2.0
+            foam_toposet(im)%box2(1) = pos_modulex + Lfan/2.0
+            foam_toposet(im)%box1(2) = pos_set - dx0/3.0
+            foam_toposet(im)%box2(2) = pos_set + dx0/3.0
+            foam_toposet(im)%box1(3) = pos_moduley - Lfan/2.0
+            foam_toposet(im)%box2(3) = pos_moduley + Lfan/2.0         
+            ! Define topo and patch name
+            foam_toposet(im)%name = setname(auxname,im) 
+            foam_toposet(im)%patchname = setname(auxname2,im) 
+         end if
+      end do
+      end do
+      ! NORTH
+      pos_set =  0.5*mid_gap + y_rack   
+      do js = 1,9
+      do is = 1,3      
+         if ((is + js) > 2) then
+            im = im + 1         
+            pos_modulex =  pos_mod + 0.5*dbattery_x + (is -1)*dbattery_x
+            pos_moduley =  0.5*dbattery_y + (js -1)*dbattery_y
+            foam_toposet(im)%box1(1) = pos_modulex - Lfan/2.0
+            foam_toposet(im)%box2(1) = pos_modulex + Lfan/2.0
+            foam_toposet(im)%box1(2) = pos_set - dx0/3.0
+            foam_toposet(im)%box2(2) = pos_set + dx0/3.0
+            foam_toposet(im)%box1(3) = pos_moduley - Lfan/2.0
+            foam_toposet(im)%box2(3) = pos_moduley + Lfan/2.0         
+            ! Define topo and patch name
+            foam_toposet(im)%name = setname(auxname,im) 
+            foam_toposet(im)%patchname = setname(auxname2,im) 
+         end if
+      end do
+      end do
+   end do
+
+   write(*,*) "TopSet=",ntopoSet," im=",im
+   ntopoSet = im
+
+   ! change from mm to m
+   do im = 1,ntopoSet
+      foam_toposet(im)%box1(:) = foam_toposet(im)%box1(:)/1000.0
+      foam_toposet(im)%box2(:) = foam_toposet(im)%box2(:)/1000.0              
+      ! print topoSets (two files)
+      call export_faceSet(ioTopo,foam_toposet(im) )
+      call export_facePatch(ioPatch,foam_toposet(im))
+   end do   
+
+   stop
+
+
+
+
+
+
+
+
+
+   
+
 
    !===============================================
 

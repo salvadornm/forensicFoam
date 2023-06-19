@@ -29,8 +29,24 @@ patches
         constructFrom set;
 
         // If constructFrom = set : name of faceSet
-        set f0;
+        set hvac1;
     }
+    {
+        // Name of new patch
+        name inlet2;
+     
+        // Dictionary to construct new patch from
+       patchInfo
+        {
+        type patch;
+        }
+     
+       // How to construct: either from 'patches' or 'set'
+       constructFrom set;
+     
+       // If constructFrom = set : name of faceSet
+       set hvac2;
+       }    
 //----------------------------------------------------
    {
     // Name of new patch
@@ -101,7 +117,7 @@ patches
 //----------------------------------------------------
    {
     // Name of new patch
-    name return3;
+    name return3a;
 
     // Dictionary to construct new patch from
     patchInfo
@@ -113,12 +129,28 @@ patches
     constructFrom set;
 
     // If constructFrom = set : name of faceSet
-    set f3;
+    set f3a;
+   }
+   {
+    // Name of new patch
+    name return3b;
+
+    // Dictionary to construct new patch from
+    patchInfo
+    {
+    type patch;
+    }
+
+    // How to construct: either from 'patches' or 'set'
+    constructFrom set;
+
+    // If constructFrom = set : name of faceSet
+    set f3b;
    }
 //----------------------------------------------------
-{
+   {
     // Name of new patch
-    name return4;
+    name return4a;
 
     // Dictionary to construct new patch from
     patchInfo
@@ -130,7 +162,23 @@ patches
     constructFrom set;
 
     // If constructFrom = set : name of faceSet
-    set f4;
+    set f4a;
+   }   
+   {
+    // Name of new patch
+    name return4b;
+
+    // Dictionary to construct new patch from
+    patchInfo
+    {
+    type patch;
+    }
+
+    // How to construct: either from 'patches' or 'set'
+    constructFrom set;
+
+    // If constructFrom = set : name of faceSet
+    set f4b;
    }   
 //----------------------------------------------------
    {
@@ -230,24 +278,7 @@ patches
    // If constructFrom = set : name of faceSet
    set rack6;
    }
-   {
-    // Name of new patch
-    name inlet2;
- 
-    // Dictionary to construct new patch from
-   patchInfo
-    {
-    type patch;
-    }
- 
-   // How to construct: either from 'patches' or 'set'
-   constructFrom set;
- 
-   // If constructFrom = set : name of faceSet
-   set hvac2;
-   }
-    
-
+   
    {
    // Name of new patch
    name hotbattery;
@@ -264,7 +295,11 @@ patches
   // If constructFrom = set : name of faceSet
   set faulty;
   }
- 
+//****************************** //
+
+#include "patch.h"  
+
+//************************* // 
 
 
 );
