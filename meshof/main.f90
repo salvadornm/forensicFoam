@@ -122,7 +122,7 @@ program meshof
    z(:) = z(:)/1000.0
 
    ! spacing contant in each direction
-   dx0 = 40.0 !  40 m
+   dx0 = 20.0 !  40 m
 
 
    dx = dx0/1000.0   
@@ -279,7 +279,7 @@ program meshof
       call export_facePatch(ioPatch,foam_toposet(im))
    end do   
 
-   stop
+   !stop
 
 
 
