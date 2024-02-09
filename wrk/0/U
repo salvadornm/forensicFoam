@@ -1,0 +1,134 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+Uinlet          (7.22 0.0 0.0); // check python script
+Uinit          (0.0 0.0 0.0); // check python script
+
+
+dimensions      [0 1 -1 0 0 0 0];
+
+//internalField    uniform $Uinlet;
+
+
+internalField   #codeStream
+{
+    codeInclude
+    #{
+	#include "fvCFD.H"
+    #};
+
+    codeOptions
+    #{
+	-I$(LIB_SRC)/finiteVolume/lnInclude \
+	-I$(LIB_SRC)/meshTools/lnInclude
+    #};
+	
+    codeLibs
+    #{
+	-lmeshTools \
+	-lfiniteVolume
+    #};
+	
+    code
+
+    #{
+	const IOdictionary& d = static_cast<const IOdictionary&>(dict);
+	const fvMesh& mesh = refCast<const fvMesh>(d.db());
+
+    vectorField U(mesh.nCells());
+	const vectorField& CC = mesh.C(); //cell center 
+
+    scalar w1 = 1.0/800; scalar Vrms= 0.001;
+
+    // some fluctuations in velocity
+	forAll(U,cellI)
+	{
+	    	scalar x = CC[cellI].x();
+	    	scalar y = CC[cellI].y();
+            scalar z = CC[cellI].z(); 
+            scalar zd = exp(-z/200);
+            scalar up =7.22;    
+            scalar vp = Vrms*sin(w1*y); //chek
+           for (int i=2;i <8; i++)
+           {
+              vp +=  Vrms*sin(i*w1*y + 0.25*i)*cos(x/200)/i;
+           }
+           // up = 7.22*(z/z0)
+	        U[cellI] = vector(up,vp*zd,0.0);
+	}
+	writeEntry(os,"", U);
+    #};
+};
+
+
+boundaryField
+{
+    
+    top
+    {
+      //  type            fixedValue;
+      //  value           uniform $Uinlet;
+        type           zeroGradient;  
+       // type slip;
+    }
+
+    wall
+    {
+        type            noSlip;
+    }
+
+   "(north|south|east)"
+    {
+        type           zeroGradient;      
+    }
+
+    west
+    {
+
+    // Mandatory entries (unmodifiable)
+    type            atmBoundaryLayerInletVelocity;
+    value           uniform (0 0 0);
+
+    // // Mandatory (inherited) entries (runtime modifiable)
+    flowDir         (1 0 0);
+    zDir            (0 0 1);
+    Uref            2.57222;
+    Zref            9.1;
+    z0              uniform 0.5;
+    zGround         uniform 0.0;
+
+    // // Optional (inherited) entries (unmodifiable)
+    kappa           0.41;
+    Cmu             0.09;
+    initABL         true;
+    phi             phi;
+    C1              0.0;
+    C2              1.0;
+
+
+   // contanst inlet TEST
+    type            fixedValue;
+    value           uniform $Uinlet;
+
+    }
+
+
+
+
+}
+
+
+// ************************************************************************* //
