@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "buoyantReactingFoam.C": "cpp",
-        "forensicWindFoam.C": "cpp"
+        "forensicWindFoam.C": "cpp",
+        "reactingFoam.C": "cpp"
     }
 }

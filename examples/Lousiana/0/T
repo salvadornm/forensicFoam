@@ -14,7 +14,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-Tatm 298.15;    // 25 degrees
+Tatm 300;    // 25 degrees
 Tground 300;   // ground is hotter
 
 dimensions      [0 0 0 1 0 0 0];
@@ -26,15 +26,16 @@ boundaryField
     
     top
     {
-        type            fixedValue;
-        value           uniform $Tatm;
+       // type            fixedValue;
+       // value           uniform $Tatm;
+        type           zeroGradient;
     }
 
-    wall
+    bottom
     {
-       // type           zeroGradient;
-        type            fixedValue;
-        value           uniform $Tground;
+        type           zeroGradient;
+      //  type            fixedValue;
+      //  value           uniform $Tground;
     }
 
    "(north|south|east|west)"

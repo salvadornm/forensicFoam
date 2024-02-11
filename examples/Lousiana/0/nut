@@ -32,9 +32,10 @@ boundaryField
 
     wall
     {
-        type            nutkAtmRoughWallFunction; 
-        value           uniform 0.0;
-        z0              uniform 0.5;
+      //  type            nutkAtmRoughWallFunction; 
+     //   value           uniform 0.0;
+     //   z0              uniform 0.5;
+        type           zeroGradient;      
     }
 
     default

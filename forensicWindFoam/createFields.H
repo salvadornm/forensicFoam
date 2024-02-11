@@ -124,6 +124,40 @@ volScalarField dpdt
     dimensionedScalar(p.dimensions()/dimTime, 0)
 );
 
+
+// SNM 
+volVectorField Fg
+(
+    IOobject
+    (
+        "Fg",
+        runTime.timeName(),
+        mesh,        
+        IOobject::MUST_READ
+    ),
+    mesh
+);
+
+// SNM: Global Wind restitutive force (overall pressure gradient)
+Info<< "Creating field Fwind\n" << endl;
+volVectorField FWind
+(
+    IOobject
+    (
+        "FWind",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedVector(dimLength/dimTime/dimTime, Zero)
+);
+
+
+
+
+
 Info<< "Creating field kinetic energy K\n" << endl;
 volScalarField K("K", 0.5*magSqr(U));
 

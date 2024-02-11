@@ -1,5 +1,13 @@
 // Solve the Momentum equation
 
+forAll(mesh.C(),cellI)
+{
+    Fg[cellI][0]  = 0.0;
+    Fg[cellI][1]  = 0.0;
+    Fg[cellI][2]  = -9.81*rho[cellI];
+}
+
+
 MRF.correctBoundaryVelocity(U);
 
 tmp<fvVectorMatrix> tUEqn
@@ -9,6 +17,7 @@ tmp<fvVectorMatrix> tUEqn
   + turbulence->divDevTau(U)
  ==
     fvModels.source(rho, U)
+ // + Fg //SNM  
 );
 fvVectorMatrix& UEqn = tUEqn.ref();
 
@@ -25,7 +34,7 @@ if (pimple.momentumPredictor())
         fvc::reconstruct
         (
             (
-              - ghf*fvc::snGrad(rho)
+              - ghf*fvc::snGrad(rho)  //SNM  coment this line 
               - fvc::snGrad(p_rgh)
             )*mesh.magSf()
         )

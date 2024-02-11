@@ -28,7 +28,7 @@ solvers
     {
         solver              GAMG;
         tolerance           1e-8;
-        relTol              1e-3;
+        relTol              1e-6;
         smoother            GaussSeidel;
     };
 
@@ -36,7 +36,7 @@ solvers
     {
         $p_rgh;
         tolerance           1e-8;
-        relTol              1e-6; // was 0
+        relTol              0; // was 0
     };
 
     ph_rgh
@@ -84,8 +84,8 @@ solvers
 PIMPLE
 {
     momentumPredictor yes;
-    nOuterCorrectors  1;
-    nCorrectors       2;
+    nOuterCorrectors  1; //1
+    nCorrectors       2; //2
     nNonOrthogonalCorrectors 0;
 
     hydrostaticInitialisation no; // was yes

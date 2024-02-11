@@ -8,39 +8,24 @@
 FoamFile
 {
     format      ascii;
-    class       volScalarField;
+    class       volVectorField;
     location    "0";
-    object      O2;
+    object      U;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 0 0 0 0 0 0];
+Finit          (0.0 0.0 0.0); 
 
-internalField   uniform 0.23301;
+dimensions      [1 -2 -2 0 0 0 0];
+
+internalField    uniform $Finit;
 
 boundaryField
 {
-    "(north|south|east|west)"
+    
+   "(north|south|east|west|top|bottom)"
     {
-        type            zeroGradient;
+        type           zeroGradient;      
     }
-
-    top
-    {
-        type            zeroGradient;
-    }
-
-    wall
-    {
-        type            zeroGradient;
-    }
-
-    default
-    {
-        type            zeroGradient;
-    }
-  
 }
-
-
 // ************************************************************************* //

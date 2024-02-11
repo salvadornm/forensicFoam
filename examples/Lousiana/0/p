@@ -16,7 +16,50 @@ FoamFile
 
 dimensions      [1 -1 -2 0 0 0 0];
 
-internalField   uniform 101325;
+internalField   uniform  101325;
+
+internalField   #codeStream
+{
+    codeInclude
+    #{
+	#include "fvCFD.H"
+    #};
+
+    codeOptions
+    #{
+	-I$(LIB_SRC)/finiteVolume/lnInclude \
+	-I$(LIB_SRC)/meshTools/lnInclude
+    #};
+	
+    codeLibs
+    #{
+	-lmeshTools \
+	-lfiniteVolume
+    #};
+	
+    code
+
+    #{
+	const IOdictionary& d = static_cast<const IOdictionary&>(dict);
+	const fvMesh& mesh = refCast<const fvMesh>(d.db());
+
+    scalarField P(mesh.nCells());
+	const vectorField& CC = mesh.C(); //cell center 
+
+   // scalar zT = - 8724.032758300542; //from Python [m]
+    scalar P0 = 101325;scalar rho0 = 1.1975; //from Python [m]
+    
+    // pressure as function of height
+	forAll(P,cellI)
+	{
+        scalar z  = CC[cellI].z(); 
+        P[cellI]  =  P0 - rho0*9.81*z;
+	}
+	writeEntry(os,"", P);
+    #};
+};
+
+
 
 boundaryField
 {
@@ -28,12 +71,24 @@ boundaryField
 
     }
 
-    "(top|bottom)"
+    "(top)"
     {
-      //  type            calculated;
-      //  value           $internalField;
-        type            zeroGradient;
+      //  type            zeroGradient;  
+        type fixedValue;
+        value uniform 79629.2;   // using hydro
+      
+
     }
+
+    "(bottom)"
+    {
+      // type            zeroGradient;
+       type fixedValue;
+       value uniform 101325;
+    }
+
+     
+
 }
 
 // ************************************************************************* //
