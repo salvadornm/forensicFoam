@@ -125,7 +125,7 @@ volScalarField dpdt
 );
 
 
-// SNM 
+// SNM: auxiliar vector
 volVectorField Fg
 (
     IOobject
@@ -140,11 +140,11 @@ volVectorField Fg
 
 // SNM: Global Wind restitutive force (overall pressure gradient)
 Info<< "Creating field Fwind\n" << endl;
-volVectorField FWind
+volVectorField Fwind
 (
     IOobject
     (
-        "FWind",
+        "Fwind",
         runTime.timeName(),
         mesh,
         IOobject::NO_READ,
@@ -154,9 +154,29 @@ volVectorField FWind
     dimensionedVector(dimLength/dimTime/dimTime, Zero)
 );
 
+// average velocity in plane x-y  Uavg(z)
+Info<< "Creating field Uavg\n" << endl;
+volVectorField Uavg
+(
+    IOobject
+    (
+        "Uavg",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedVector(dimLength/dimTime, Zero)
+);
+
+// vector to store U(z)
+const int nzprof=400;
+vectorField Uwindz(nzprof);  // profile Uwindz(z)
+const vector Uwind(1,0,0);   // reference vector wind
 
 
-
+//********************************
 
 Info<< "Creating field kinetic energy K\n" << endl;
 volScalarField K("K", 0.5*magSqr(U));

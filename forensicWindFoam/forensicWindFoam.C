@@ -166,12 +166,19 @@ int main(int argc, char *argv[])
                     #include "rhoEqn.H"
                 }
 
-                // rho = thermo.rho();  // SNM idea
 
                 if (pimple.models())
                 {
                     fvModels.correct();
                 }
+                        
+                //--- Read Wind data
+
+                //--- Interpolate right time and getin wind data and direction
+
+                //--- Calcuate average over x-y plane
+
+                
 
                 #include "UEqn.H"
 
