@@ -154,27 +154,13 @@ volVectorField Fwind
     dimensionedVector(dimLength/dimTime/dimTime, Zero)
 );
 
-// average velocity in plane x-y  Uavg(z)
-Info<< "Creating field Uavg\n" << endl;
-volVectorField Uavg
-(
-    IOobject
-    (
-        "Uavg",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::AUTO_WRITE
-    ),
-    mesh,
-    dimensionedVector(dimLength/dimTime, Zero)
-);
 
 // vector to store U(z)
 const int nzprof=400;
-vectorField Uwindz(nzprof);  // profile Uwindz(z)
-const vector Uwind(1,0,0);   // reference vector wind
-
+vectorField Uavg(nzprof);    // z-profile         Uavg(z)
+scalarField Vavg(nzprof);    // aux array storing sumV(z)
+scalarField Tavg(nzprof);    // aux array storing Tavg(z)
+const scalar Lz=max(mesh.C()).value()[2];  // size of domain in Z
 
 //********************************
 

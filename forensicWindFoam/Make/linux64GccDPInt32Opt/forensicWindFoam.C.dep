@@ -33,6 +33,7 @@ EEqn.H \
 $(WM_PROJECT_DIR)/applications/solvers/combustion/reactingFoam/correctPhi.H \
 $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/meshCourantNo.H \
 $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/rhoEqn.H \
+Uavg.H \
 UEqn.H \
 pEqn.H \
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/parRun.H \
@@ -929,6 +930,7 @@ EEqn.H :
 $(WM_PROJECT_DIR)/applications/solvers/combustion/reactingFoam/correctPhi.H :
 $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/meshCourantNo.H :
 $(WM_PROJECT_DIR)/src/finiteVolume/lnInclude/rhoEqn.H :
+Uavg.H :
 UEqn.H :
 pEqn.H :
 $(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/parRun.H :

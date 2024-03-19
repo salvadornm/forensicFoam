@@ -176,9 +176,9 @@ int main(int argc, char *argv[])
 
                 //--- Interpolate right time and getin wind data and direction
 
-                //--- Calcuate average over x-y plane
+                //--- Calcuate average over x-y plane 
+                #include "Uavg.H"    
 
-                
 
                 #include "UEqn.H"
 
