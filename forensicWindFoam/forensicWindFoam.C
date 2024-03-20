@@ -48,6 +48,7 @@ Description
 #include "fvConstraints.H"
 #include "localEulerDdtScheme.H"
 #include "fvcSmooth.H"
+#include "Random.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -172,9 +173,8 @@ int main(int argc, char *argv[])
                     fvModels.correct();
                 }
                         
-                //--- Read Wind data
-
-                //--- Interpolate right time and getin wind data and direction
+                //--- Interpolate right time and to get wind data and direction
+                #include "Wind.H"
 
                 //--- Calcuate average over x-y plane 
                 #include "Uavg.H"    
