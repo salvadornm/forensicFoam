@@ -14,7 +14,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-Utop           (5.0 0.0 0.0);    // check python script
+Utop           (4.879639249161253 0.0 0.0);    // check python script
 Uinit          (0.0 0.0 0.0);    // check python script
 
 
@@ -51,25 +51,55 @@ internalField   #codeStream
     vectorField U(mesh.nCells());
 	const vectorField& CC = mesh.C(); //cell center 
 
-    //------------------------------------------
-    const scalar w1 = 1.0/800; const scalar Vrms= 0.01;
-    const scalar Zref = 100.0;const scalar Vref = 5.0;
+    //------------------------------------------------- //
+    // -----      DATA FROM FILE                    ----//
+    const scalar Vref = 3.124100; scalar windangle = 140.194430;
 
-    // some fluctuations in velocity
+    //------------------------------------------------- //
+    // ABL:  zg ground  z0 roughness zmax (height where ABL exist)    
+    // V(Zref)= Vref Zref: refernce height
+
+    const scalar zmax  = 500; const scalar Zref = 100.0;  
+    const scalar zg = 0; const scalar z0 = 0.5; const scalar kappa =0.41;
+    const scalar Ustar =  kappa*Vref/log((Zref+z0)/z0);
+    //const scalar deg2rad = 0.5*3.141592/90;
+    const scalar pi=Foam::constant::mathematical::pi;
+    const scalar deg2rad = 0.5*pi/90;
+    
+    windangle = windangle*deg2rad;
+
+
+    // pertubation data
+    const scalar w1 = 1.0/800; const scalar Vrms= 0.3;
+    // array of phase
+    int nmodes = 8; scalar phis[nmodes];
+    for (int i=0;i <nmodes; i++) { phis[i] = rand()*pi;}
+
+
+    // ******** ///
+
+    // some fluctuations in velocity, perpendicular direction to wind
 	forAll(U,cellI)
 	{
 	    	const scalar x = CC[cellI].x();
 	    	const scalar y = CC[cellI].y();
             const scalar z = CC[cellI].z(); 
-            scalar zd = exp(-z/Zref);
-            scalar up = Vref*min(pow(z/Zref, 2),1);          
-            scalar vp = 0.0; //check random
-            for (int i=1;i <8; i++)
+            const scalar zd = exp(-z/Zref);            
+            scalar zbl = min(z,zmax) - zg + z0;
+            
+            scalar Uwind = Ustar*log(zbl/z0)/kappa;
+            scalar up = Uwind*sin(windangle);
+            scalar vp = Uwind*cos(windangle);            
+            scalar xi = x*cos(windangle) + y*sin(windangle); 
+            scalar wp = 0.0; 
+            for (int i=1;i <=nmodes; i++)
             {              
-              vp +=  Vrms*sin(i*w1*y + 0.25*i)*sin(x/200)/i;
+              wp +=  Vrms*sin(i*w1*xi + phis[i-1])/i;
             }
            
-	        U[cellI] = vector(up,vp*zd,0.0);
+	     U[cellI] = vector(up,vp,wp*zd);
+            //U[cellI] = vector(0.0,0.0,0.0);
+            
 	}
 	writeEntry(os,"", U);
     #};
@@ -81,104 +111,97 @@ boundaryField
     
     top
     {
-      type            fixedValue;
-      value           uniform $Utop;
-      //  type           zeroGradient;  
-       // type slip;
+     // type            fixedValue;
+    //  value           uniform $Utop;
+    //  type           zeroGradient;  
+      type slip;
     }
 
-    wall
+    "(bottom|terrain)"
     {
         type            noSlip;
     }
 
-    bottom
+    tank1
     {
-        type            noSlip;
+     type            noSlip;
+     //  type            flowRateInletVelocity;
+     //  volumetricFlowRate    constant  0.00026; //default 0.00026 m3/s
+     //  value           uniform (0 0 0);
+
+     //  type            fixedValue;
+     //  value           uniform (0 0 5.0);
     }
 
-   "(north|south|east)"
+
+
+   "(east|west)"
     {
         type           zeroGradient;      
     }
 
-//     west2
-//     {
-
-//     // Mandatory entries (unmodifiable)
-//     type            atmBoundaryLayerInletVelocity;
-//     value           uniform (0 0 0);
-
-//     // // Mandatory (inherited) entries (runtime modifiable)
-//     flowDir         (1 0 0);
-//     zDir            (0 0 1);
-//     Uref            2.57222;
-//     Zref            9.1;
-//     z0              uniform 0.5;
-//     zGround         uniform 0.0;
-
-//     // // Optional (inherited) entries (unmodifiable)
-//     kappa           0.41;
-//     Cmu             0.09;
-//     initABL         true;
-//     phi             phi;
-//     C1              0.0;
-//     C2              1.0;
+   "(north|south)"
+    {
+        type            zeroGradient;      
+    }
 
 
-//    // contanst inlet TEST
-//     type            fixedValue;
-//     value           uniform $Uinlet;
+//    west
+//    {
+//         type           fixedValue;
+//         value          #codeStream
+//         {
 
-//     }
+//         codeInclude
+//         #{
+// 	        #include "fvCFD.H"
+//         #};
 
-   west
-   {
-        type           fixedValue;
-        value          #codeStream
-        {
-
-        codeInclude
-        #{
-	        #include "fvCFD.H"
-        #};
-
-        codeOptions
-        #{
-	        -I$(LIB_SRC)/finiteVolume/lnInclude \
-	        -I$(LIB_SRC)/meshTools/lnInclude
-        #};
+//         codeOptions
+//         #{
+// 	        -I$(LIB_SRC)/finiteVolume/lnInclude \
+// 	        -I$(LIB_SRC)/meshTools/lnInclude
+//         #};
 	
-        codeLibs
-        #{
-	        -lmeshTools \
-	        -lfiniteVolume
-        #};
+//         codeLibs
+//         #{
+// 	        -lmeshTools \
+// 	        -lfiniteVolume
+//         #};
 	
-        code
-        #{
-            // access boundary mesh information (always the same)
-            const IOdictionary& d = static_cast<const IOdictionary&>
-            (
-            dict.parent().parent()
-            );
-            const fvMesh& mesh = refCast<const fvMesh>(d.db());
-            const label id = mesh.boundary().findPatchID("west");
-            const fvPatch& patch = mesh.boundary()[id];
-            vectorField U(patch.size(), vector(0, 0, 0));
-            ////-------
-            const scalar Zref = 100.0;const scalar Vref = 5.0;
-            forAll(U, i)
-            {
-            const scalar z = patch.Cf()[i][2];  
-            scalar up = Vref*min(pow(z/Zref, 2),1);              
-            U[i] = vector(up,0.0,0.0);
-            } 
-            ////--------
-            writeEntry(os,"", U);
-        #};
+//         code
+//         #{
+//             // access boundary mesh information (always the same)
+//             const IOdictionary& d = static_cast<const IOdictionary&>
+//             (
+//             dict.parent().parent()
+//             );
+//             const fvMesh& mesh = refCast<const fvMesh>(d.db());
+//             const label id = mesh.boundary().findPatchID("west");
+//             const fvPatch& patch = mesh.boundary()[id];
+//             vectorField U(patch.size(), vector(0, 0, 0));
+//             ////------- ABL
+//             const scalar Vref = 3.12; const scalar windangle = 90;//DATA
+//             const scalar zmax  = 500;
+//             const scalar zg = 0; const scalar z0 = 0.5; const scalar kappa =0.41;
+//             const scalar Zref = 100.0;  
+//             const scalar Ustar =  kappa*Vref/log((Zref+z0)/z0);                
+//             ///-------
 
-        };
-   }     
+//             forAll(U, i)
+//             {
+//             const scalar z = patch.Cf()[i][2];  
+//             const scalar zbl = min(z,zmax) - zg + z0;
+//             //scalar up = Vref*min(pow(z/Zref, 2),1); 
+//             scalar up = Ustar*log(zbl/z0)/kappa;             
+
+//             U[i] = vector(up,0.0,0.0);
+//             } 
+//             ////--------
+//             writeEntry(os,"", U);
+//         #};
+
+//         };
+//    }     
 }
 // ************************************************************************* //

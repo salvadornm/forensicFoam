@@ -189,6 +189,7 @@ float wind_time[nmaxwindsteps];
 float wind_speedT,wind_angT,wind_TT;
 int windsteps=0;   // number of wind steps in file (to read in file)
 int currentwindstep = 0; // actual  wind step
+int variable_wind = 0; 
 
 // READ DATA
 
@@ -201,6 +202,11 @@ wind_time[2] = 2; wind_speed[2]=  4.909175; wind_ang[2]=  176.496480;wind_T[2]= 
 wind_time[3] = 3; wind_speed[3]=  4.925444; wind_ang[3]=  185.826340;wind_T[3]= 305.457198;
 wind_time[4] = 4; wind_speed[4]=  4.780168; wind_ang[4]=  195.780750;wind_T[4]= 304.877198;
 wind_time[5] = 5; wind_speed[5]=  3.883298;	wind_ang[5]=  214.508530;wind_T[5]=	304.497198;
+
+//
+wind_speedT = wind_speed[currentwindstep];
+wind_angT   = wind_ang[currentwindstep];
+wind_TT     = wind_T[currentwindstep];     
 
 // std::ifstream file("wind.dat"); // Open the file
     

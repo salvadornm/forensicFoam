@@ -20,17 +20,24 @@ internalField   uniform 0.0;
 
 boundaryField
 {
-    "(north|south|east|west)"
+    "(north|south)"
+    {
+        type            zeroGradient;        
+    }
+
+
+    "(east|west)"
     {
         type            zeroGradient;
     }
+
 
     top
     {
         type            zeroGradient;
     }
 
-    wall
+    "(bottom|terrain)"
     {
       //  type            nutkAtmRoughWallFunction; 
      //   value           uniform 0.0;
@@ -42,6 +49,13 @@ boundaryField
     {
         type            zeroGradient;
     }
+
+    tank1
+    {
+        type            zeroGradient;
+    }
+
+
   
 }
 

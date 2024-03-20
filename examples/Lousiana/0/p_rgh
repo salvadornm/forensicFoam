@@ -20,20 +20,11 @@ internalField   uniform 0;
 
 boundaryField
 {
-    "(north|south|west)"
+    "(north|south|west|east)"
     {
        // type            fixedFluxPressure;
       //  value           $internalField;   
         type            zeroGradient;
-    }
-
-
-    // outflow
-    "(east)"
-    {
-     // type            fixedFluxPressure;
-     // value           uniform 0;
-      type            zeroGradient;
     }
 
     "(top)"
@@ -44,12 +35,18 @@ boundaryField
      // type            zeroGradient;
     }
 
-    "(bottom)"
+    "(bottom|terrain)"
     {      
      // type            zeroGradient;
-
       type            fixedFluxPressure;
       value           uniform 0;
+    }
+
+    tank1
+    {
+      //  type            zeroGradient;
+        type            fixedFluxPressure;
+        value           uniform 0;
     }
 
 

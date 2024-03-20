@@ -30,10 +30,18 @@ boundaryField
         type            zeroGradient;
     }
 
-    wall
+    "(bottom|terrain)"
     {
         type            zeroGradient;
     }
+
+    tank1
+    {
+        type            fixedValue;
+        value           uniform 0.0;
+    }
+
+
 
     default
     {

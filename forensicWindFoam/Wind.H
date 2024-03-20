@@ -1,5 +1,7 @@
 //  Adjusting Wind  by interpolating dat       // 
 Info << "====================================== " << endl;
+if (variable_wind ==1)
+{
 Info << " Adjusting Wind " << endl;
 
 scalar t=runTime.value();   //current time
@@ -20,5 +22,6 @@ wind_angT   = wind_ang[currentwindstep]   + dadt*dt;
 wind_TT     = wind_T[currentwindstep]     + dTdt*dt;
 
 Info << " currentwindstep  " << currentwindstep << " time=" << t << endl;
+}
 Info << " Wind  Speed= " << wind_speedT << " Angle=  " << wind_angT << " T= " << wind_TT << endl;
 Info << "====================================== " << endl;

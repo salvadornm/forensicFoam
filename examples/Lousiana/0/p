@@ -63,29 +63,40 @@ internalField   #codeStream
 
 boundaryField
 {
-    "(north|south|east|west)"
+    "(east|west)"
     {
-        // type            calculated;
-        // value           $internalField;
         type            zeroGradient;
-
     }
+
+
+    "(north|south)"
+    {
+        type            zeroGradient;
+    }
+
 
     "(top)"
     {
       //  type            zeroGradient;  
         type fixedValue;
-        value uniform 79629.2;   // using hydro
-      
-
+        value uniform 79629.2;      // 2 km
+        //value uniform 91377.100222; // 1km
     }
 
-    "(bottom)"
+    "(bottom|terrain)"
     {
       // type            zeroGradient;
-       type fixedValue;
-       value uniform 101325;
+      type fixedValue;
+       value uniform 101325;//<----- work in flat    
     }
+
+    tank1
+    {
+      //  type            zeroGradient;
+        type fixedValue;
+        value uniform 101325;//<----- work in flat    
+    }
+
 
      
 

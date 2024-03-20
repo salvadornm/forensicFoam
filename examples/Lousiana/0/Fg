@@ -23,9 +23,16 @@ internalField    uniform $Finit;
 boundaryField
 {
     
-   "(north|south|east|west|top|bottom)"
+   "(north|south|east|west|top|bottom|terrain)"
     {
         type           zeroGradient;      
     }
+
+   tank1
+    {
+        type            zeroGradient;
+    }
+
+
 }
 // ************************************************************************* //
