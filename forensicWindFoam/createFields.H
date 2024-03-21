@@ -191,42 +191,52 @@ int windsteps=0;   // number of wind steps in file (to read in file)
 int currentwindstep = 0; // actual  wind step
 int variable_wind = 0; 
 
-// READ DATA
 
-//manual adjust to test
-windsteps = 6;
+//manually adjust number of steps
+windsteps = 24;  //<------------------
 
-wind_time[0] = 0; wind_speed[0]=  3.124100; wind_ang[0]=  140.194430;wind_T[0]= 309.787196;
-wind_time[1] = 1; wind_speed[1]=  3.929377; wind_ang[1]=  165.256440;wind_T[1]= 308.007197;
-wind_time[2] = 2; wind_speed[2]=  4.909175; wind_ang[2]=  176.496480;wind_T[2]= 307.237196;
-wind_time[3] = 3; wind_speed[3]=  4.925444; wind_ang[3]=  185.826340;wind_T[3]= 305.457198;
-wind_time[4] = 4; wind_speed[4]=  4.780168; wind_ang[4]=  195.780750;wind_T[4]= 304.877198;
-wind_time[5] = 5; wind_speed[5]=  3.883298;	wind_ang[5]=  214.508530;wind_T[5]=	304.497198;
 
-//
-wind_speedT = wind_speed[currentwindstep];
-wind_angT   = wind_ang[currentwindstep];
-wind_TT     = wind_T[currentwindstep];     
-
-// std::ifstream file("wind.dat"); // Open the file
+// READ DATA 
+std::ifstream fin("wind.dat"); // Open the file
+string line;
     
-// if (!file.is_open()) {
-//     std::cerr << "Error opening Wind file." << std::endl;
-//     return 1;
-// }
+if (!fin.is_open()) {
+    std::cerr << "Error opening Wind file." << std::endl;
+    return 1;
+}
 
-// float c1, c2, c3, c4;
-    
-// while (file >> c1 >> c2 >> c3 >> c4)
-// { // Read until end of file
-//    // Process the read values
-//     std::cout << "C 1: " << c1 << ", C 2: " << c2 << ", C 3: " << c3 << " C 4: " << c4 << std::endl;
-// }
-// file.close(); // Close the file
+const int ncolumns =4;
+float c[ncolumns];
+int i=0;
+
+// discard first line (header)
+getline(fin,line);
+// read data
+while (fin >> c[0] >> c[1] >> c[2] >> c[3])
+{
+wind_time[i]  = c[0];
+wind_speed[i] = c[1];
+wind_ang[i]   = c[2];
+wind_T[i]     = c[3];
+i++;
+}
+fin.close();
+
+// check if data is read correctly
+//for (int i = 0; i<windsteps; i++) 
+//{
+//Info << i << " speed= " <<  wind_speed[i] << " ang= " << wind_ang[i] << " T= " << wind_T[i] << endl;
+//}
 
 
 // change from h to secs
 for (int i = 0; i<windsteps; i++) { wind_time[i] = wind_time[i]*3600.0;}  // **  DEBUG 3600
+
+
+// assign current time
+wind_speedT = wind_speed[currentwindstep];
+wind_angT   = wind_ang[currentwindstep];
+wind_TT     = wind_T[currentwindstep];     
 
 
 // buffer array
