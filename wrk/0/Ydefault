@@ -39,6 +39,13 @@ boundaryField
     {
         type            zeroGradient;
     }
+
+    tank1
+    {
+        type            zeroGradient;
+    }
+
+
   
 }
 

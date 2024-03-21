@@ -14,8 +14,8 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-Tatm 298.15;    // 25 degrees
-Tground 300;   // ground is hotter
+Tatm 300;               // 25 degrees
+Tground 309.787196;     // ground is hotter  DATA
 
 dimensions      [0 0 0 1 0 0 0];
 
@@ -26,26 +26,44 @@ boundaryField
     
     top
     {
-        type            fixedValue;
-        value           uniform $Tatm;
+       // type            fixedValue;
+       // value           uniform $Tatm;
+        type           zeroGradient;
     }
 
-    wall
+    "(bottom|terrain)"
     {
-       // type           zeroGradient;
-        type            fixedValue;
-        value           uniform $Tground;
+      //  type           zeroGradient;
+       type            fixedValue;
+       value           uniform $Tground;
     }
 
-   "(north|south|east|west)"
+   "(north|south)"
     {
         type            zeroGradient;
     }
+
+    "(east|west)"
+    {
+        type            zeroGradient;
+    }
+
 
     default
     {
         type            zeroGradient;
     }
+
+    tank1
+    {
+     //  type            fixedValue;
+     //  value           uniform 800;
+       //type            zeroGradient;
+       type            fixedValue;
+       value           uniform $Tground;
+    }
+	    
+
 
 }
 

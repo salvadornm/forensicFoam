@@ -16,7 +16,7 @@ FoamFile
 
 dimensions      [1 -1 -2 0 0 0 0];
 
-//internalField   uniform 101325;
+internalField   uniform  101325;
 
 internalField   #codeStream
 {
@@ -46,14 +46,14 @@ internalField   #codeStream
     scalarField P(mesh.nCells());
 	const vectorField& CC = mesh.C(); //cell center 
 
-    scalar zT = - 8724.032758300542; //from Python in m
-    scalar P0 = 101325;
+   // scalar zT = - 8724.032758300542; //from Python [m]
+    scalar P0 = 101325;scalar rho0 = 1.1975; //from Python [m]
     
     // pressure as function of height
 	forAll(P,cellI)
 	{
-       // scalar z  = CC[cellI].z(); 
-        P[cellI]  = P0;//*exp(z/zT);
+        scalar z  = CC[cellI].z(); 
+        P[cellI]  =  P0 - rho0*9.81*z;
 	}
 	writeEntry(os,"", P);
     #};
@@ -63,20 +63,43 @@ internalField   #codeStream
 
 boundaryField
 {
-    "(north|south|east|west)"
+    "(east|west)"
     {
-        // type            calculated;
-        // value           $internalField;
-        type            zeroGradient;
-
-    }
-
-    "(top|bottom)"
-    {
-      //  type            calculated;
-      //  value           $internalField;
         type            zeroGradient;
     }
+
+
+    "(north|south)"
+    {
+        type            zeroGradient;
+    }
+
+
+    "(top)"
+    {
+      //  type            zeroGradient;  
+        type fixedValue;
+        value uniform 79629.2;      // 2 km
+        //value uniform 91377.100222; // 1km
+    }
+
+    "(bottom|terrain)"
+    {
+      // type            zeroGradient;
+      type fixedValue;
+       value uniform 101325;//<----- work in flat    
+    }
+
+    tank1
+    {
+      //  type            zeroGradient;
+        type fixedValue;
+        value uniform 101325;//<----- work in flat    
+    }
+
+
+     
+
 }
 
 // ************************************************************************* //

@@ -16,23 +16,39 @@ FoamFile
 
 dimensions      [1 -1 -2 0 0 0 0];
 
-internalField   uniform 1; 
+internalField   uniform 0; 
 
 boundaryField
 {
-    "(north|south|east|west)"
+    "(north|south|west|east)"
     {
        // type            fixedFluxPressure;
       //  value           $internalField;   
         type            zeroGradient;
     }
 
-    "(top|bottom)"
+    "(top)"
     {
-      // type            fixedFluxPressure;
-      // value           $internalField;
-       type            zeroGradient;
+      type            fixedFluxPressure;
+      value           uniform 0;
+
+     // type            zeroGradient;
     }
+
+    "(bottom|terrain)"
+    {      
+     // type            zeroGradient;
+      type            fixedFluxPressure;
+      value           uniform 0;
+    }
+
+    tank1
+    {
+      //  type            zeroGradient;
+        type            fixedFluxPressure;
+        value           uniform 0;
+    }
+
 
     default
     {

@@ -194,6 +194,7 @@ int variable_wind = 0;
 
 //manually adjust number of steps
 windsteps = 24;  //<------------------
+variable_wind =1;
 
 
 // READ DATA 
@@ -234,6 +235,8 @@ for (int i = 0; i<windsteps; i++) { wind_time[i] = wind_time[i]*3600.0;}  // ** 
 
 
 // assign current time
+currentwindstep = 0; //  this will change in restarts
+
 wind_speedT = wind_speed[currentwindstep];
 wind_angT   = wind_ang[currentwindstep];
 wind_TT     = wind_T[currentwindstep];     

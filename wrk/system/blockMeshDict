@@ -15,16 +15,16 @@ FoamFile
 
 convertToMeters 1000;
 
-xmin  0;
-xmax  10;
-ymin  0;
-ymax  10;
+xmin  -4.8;
+xmax  7;
+ymin  -3;
+ymax  5;
 zmin  0;
-zmax  2;
+zmax  2.0;
 
-xcells 128;
-ycells 128;
-zcells 64; 
+xcells 120;
+ycells 80;
+zcells 80; 
 
 vertices
 (
@@ -40,7 +40,7 @@ vertices
 
 blocks
 (
-    hex (0 1 2 3 4 5 6 7) ($xcells $ycells $zcells) simpleGrading (1 1 10)
+    hex (0 1 2 3 4 5 6 7) ($xcells $ycells $zcells) simpleGrading (1 1 5)
 );
 
 boundary
