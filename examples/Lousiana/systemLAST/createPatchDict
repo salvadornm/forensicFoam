@@ -9,21 +9,28 @@ FoamFile
 {
     format      ascii;
     class       dictionary;
-    location    "system";
-    object      topoSetDict.3;
+    object      createPatchDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-actions
+patches
 (
     {
-        name    c3;
-        type    cellSet;
-        action  new;
-        source  boxToCell;
-        box (5300.0 2650.0 0.001) (5400.0 2750 200);
+        // Name of new patch
+        name tank1;
+
+        // Dictionary to construct new patch from
+        patchInfo
+        {
+            type patch;
+        }
+
+        // How to construct: either from 'patches' or 'set'
+        constructFrom set;
+
+        // If constructFrom = set : name of faceSet
+        set tank1;
     }
 );
 
 // ************************************************************************* //
-//  5343.3 2700.7 //

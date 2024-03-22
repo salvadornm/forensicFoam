@@ -10,20 +10,27 @@ FoamFile
     format      ascii;
     class       dictionary;
     location    "system";
-    object      topoSetDict.3;
+    object      refineMeshDict.2;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-actions
-(
-    {
-        name    c3;
-        type    cellSet;
-        action  new;
-        source  boxToCell;
-        box (5300.0 2650.0 0.001) (5400.0 2750 200);
-    }
-);
+set             c2;
+
+coordinateSystem global;
+
+globalCoeffs
+{
+    e1              (1 0 0);
+    e2              (0 1 0);
+}
+
+directions      (e1 e2);
+
+useHexTopology  yes;
+
+geometricCut    no;
+
+writeMesh       no;
+
 
 // ************************************************************************* //
-//  5343.3 2700.7 //

@@ -18,7 +18,7 @@ print('Lousiana numbers 2023')
 
 print('  LOG WALL')
 
-H=2000  # Height
+H=2000  # Height  1 km
 
 Knts2ms = 0.514444 # 1 knts = 0.51444 m/s
 
@@ -53,20 +53,31 @@ print(' [OpenFOAM] number on inlet  for 0/k=',k)
 
 # P=P0*exp(-z/z0) atmospheric drop
 M = 0.028964 # kg/mol
-T = 298.15
+T = 300.0
 P = P0*math.exp(-g*M*H/(Runi*T))
 
 zT = Runi*T/(g*M)
 
 print("[OpenFOAM]   zT= ",zT," m")
 
-print("P = ",P, "[Pa] at z= ",H," m")
+print("P  (using chem pot)= ",P, "[Pa] at z= ",H," m")
 
 rho0 = P0*M/(Runi*T)
 rho  = P*M/(Runi*T)
 
 print("rho0 = ",rho0, "[Pa] at z= ",0," m")
 print("rho = ",rho, "[Pa] at z= ",H," m")
+
+
+print(" press change=",100*(P-P0)/P0," %")
+print(" rho change=",100*(rho-rho0)/rho0," %")
+
+rho1 = rho0
+P = P0 - rho1*g*H
+
+print("P  (hydro)= ",P, "[Pa] at z= ",H," m")
+
+
 
 
 print(" ---------------------------------------------------")

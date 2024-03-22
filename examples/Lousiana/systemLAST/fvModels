@@ -9,21 +9,15 @@ FoamFile
 {
     format      ascii;
     class       dictionary;
-    location    "system";
-    object      topoSetDict.3;
+    location    "constant";
+    object      fvModels;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-actions
-(
-    {
-        name    c3;
-        type    cellSet;
-        action  new;
-        source  boxToCell;
-        box (5300.0 2650.0 0.001) (5400.0 2750 200);
-    }
-);
+radiation
+{
+    type    radiation;
+    libs    ("libradiationModels.so");
+}
 
 // ************************************************************************* //
-//  5343.3 2700.7 //

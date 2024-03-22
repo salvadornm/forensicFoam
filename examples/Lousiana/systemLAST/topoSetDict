@@ -10,18 +10,22 @@ FoamFile
     format      ascii;
     class       dictionary;
     location    "system";
-    object      topoSetDict.3;
+    object      topoSetDict.tank;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 actions
 (
     {
-        name    c3;
-        type    cellSet;
+        name    tank1;
+        type    faceSet;
         action  new;
-        source  boxToCell;
-        box (5300.0 2650.0 0.001) (5400.0 2750 200);
+     //   source  cylinderToCell;
+     //   p1 (5343.0 2700.0 -5);
+  	 //   p2 (5343.0 2700 20);
+ 	 //   radius 100;
+        source  boxToFace;
+        box (5300.0 2650.0 -5) (5400.0 2750 20);
     }
 );
 

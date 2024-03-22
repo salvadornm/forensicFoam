@@ -17,11 +17,15 @@ FoamFile
 actions
 (
     {
-        name    c3;
+        name    c4;
         type    cellSet;
         action  new;
-        source  boxToCell;
-        box (5300.0 2650.0 0.001) (5400.0 2750 200);
+       // source  boxToCell;
+      //  box (5300.0 2650.0 0.001) (5400.0 2750 200);
+        source  cylinderToCell;
+        p1 (5343.0 2700.0 -5);
+        p2 (5343.0 2700 80);
+        radius 40;
     }
 );
 
