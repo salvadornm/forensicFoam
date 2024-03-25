@@ -125,19 +125,6 @@ volScalarField dpdt
 );
 
 
-// SNM: auxiliar vector
-volVectorField Fg
-(
-    IOobject
-    (
-        "Fg",
-        runTime.timeName(),
-        mesh,        
-        IOobject::MUST_READ
-    ),
-    mesh
-);
-
 // SNM: Global Wind restitutive force (overall pressure gradient)
 Info<< "Creating field Fwind\n" << endl;
 volVectorField Fwind
@@ -179,6 +166,7 @@ const scalar Lz=max(mesh.C()).value()[2];  // size of domain in Z
 const vector Lmax = max(mesh.C()).value();
 const vector Lmin = min(mesh.C()).value();
 const scalar XBUF = 500;const scalar YBUF = 400;const scalar ZBUF = 100;
+const scalar deg2rad = 0.5*3.141592/90;
 Random auxrand(1);
 
 Info<< " Reading Wind Data \n " <<  endl;
@@ -189,12 +177,16 @@ float wind_time[nmaxwindsteps];
 float wind_speedT,wind_angT,wind_TT;
 int windsteps=0;   // number of wind steps in file (to read in file)
 int currentwindstep = 0; // actual  wind step
-int variable_wind = 0; 
+int variable_wind = 0;   // variable wind
+int nudging = 1;         // force 
 
 
-//manually adjust number of steps
-windsteps = 24;  //<------------------
-variable_wind =1;
+// manually adjust number of steps/parameters ------------//
+windsteps = 24;      // number of wind hours read
+variable_wind =1;    // variable wind
+currentwindstep = 0; //  current wind step (for restarts)
+nudging = 0;         // nudging off
+//------------------------------------------------------//
 
 
 // READ DATA 
@@ -223,19 +215,11 @@ i++;
 }
 fin.close();
 
-// check if data is read correctly
-//for (int i = 0; i<windsteps; i++) 
-//{
-//Info << i << " speed= " <<  wind_speed[i] << " ang= " << wind_ang[i] << " T= " << wind_T[i] << endl;
-//}
-
-
 // change from h to secs
 for (int i = 0; i<windsteps; i++) { wind_time[i] = wind_time[i]*3600.0;}  // **  DEBUG 3600
 
 
 // assign current time
-currentwindstep = 0; //  this will change in restarts
 
 wind_speedT = wind_speed[currentwindstep];
 wind_angT   = wind_ang[currentwindstep];
@@ -256,7 +240,9 @@ forAll(mesh.C(),cellI)
     {
        if (z < ZBUF) {buffer[cellI] = 1;}
     }    
-
+   
+   // initialize wind array
+   Fwind[cellI] = (0 0 0);
 }
 
 

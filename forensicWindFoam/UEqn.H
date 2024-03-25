@@ -11,7 +11,7 @@ const scalar zmax  = 500;
 const scalar zg = 0; const scalar z0 = 0.5; const scalar kappa =0.41;
 const scalar Zref = 100.0;  
 const scalar Ustar =  kappa*Vref/std::log((Zref+z0)/z0);
-const scalar deg2rad = 0.5*3.141592/90;
+
 windangle = windangle*deg2rad;
 // nudging model comstant
 const scalar otauf    = 1.0/10.0;  // tau=10 secs
@@ -20,6 +20,8 @@ const scalar otaufbuf = 1.0/5.0;   // tau=3 secs (buffer)
 scalar udir = std::sin(windangle);
 scalar vdir = std::cos(windangle);
 
+if (nudging==1)
+{
 // Nudging model
 forAll(mesh.C(),cellI)
 {
@@ -49,7 +51,8 @@ forAll(mesh.C(),cellI)
     scalar auxr=auxrand.scalarNormal(); 
     Fwind[cellI] += auxr*Uw*0.1*damp*otauf;// dived by dt
 }
-
+//
+}
 
 MRF.correctBoundaryVelocity(U);
 
