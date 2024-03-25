@@ -174,7 +174,7 @@ Info<< " Reading Wind Data \n " <<  endl;
 const int nmaxwindsteps=30; // max number of data stored
 float wind_speed[nmaxwindsteps],wind_ang[nmaxwindsteps],wind_T[nmaxwindsteps];
 float wind_time[nmaxwindsteps];
-float wind_speedT,wind_angT,wind_TT;
+float wind_speedT,wind_angT,wind_TT,time0wind;
 int windsteps=0;   // number of wind steps in file (to read in file)
 int currentwindstep = 0; // actual  wind step
 int variable_wind = 0;   // variable wind
@@ -184,8 +184,9 @@ int nudging = 1;         // force
 // manually adjust number of steps/parameters ------------//
 windsteps = 24;      // number of wind hours read
 variable_wind =1;    // variable wind
-currentwindstep = 0; //  current wind step (for restarts)
-nudging = 0;         // nudging off
+currentwindstep = 8; //  current wind step (for restarts)
+nudging = 1;         // nudging off
+time0wind = currentwindstep*3600;  //time0 wind (usually 0)
 //------------------------------------------------------//
 
 
@@ -216,8 +217,10 @@ i++;
 fin.close();
 
 // change from h to secs
-for (int i = 0; i<windsteps; i++) { wind_time[i] = wind_time[i]*3600.0;}  // **  DEBUG 3600
-
+for (int i = 0; i<windsteps; i++) 
+{ 
+wind_time[i] = wind_time[i]*3600.0  - time0wind ;        
+}  
 
 // assign current time
 
@@ -242,7 +245,9 @@ forAll(mesh.C(),cellI)
     }    
    
    // initialize wind array
-   Fwind[cellI] = (0 0 0);
+   Fwind[cellI][0] = 0.0;
+   Fwind[cellI][1] = 0.0;
+   Fwind[cellI][2] = 0.0;   
 }
 
 

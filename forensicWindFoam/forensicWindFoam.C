@@ -173,11 +173,12 @@ int main(int argc, char *argv[])
                     fvModels.correct();
                 }
                         
-                //--- Interpolate right time and to get wind data and direction
-                #include "Wind.H"
-
-                //--- Calcuate average over x-y plane 
+                //--- Nudging model
+                if (nudging==1)
+                {                    
+                #include "Wind.H"                
                 #include "Uavg.H"    
+                }
 
 
                 #include "UEqn.H"

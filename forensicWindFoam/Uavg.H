@@ -47,18 +47,9 @@ for (int k = 0; k<nzprof; k++)
 
     Uavg[k][2] = 0;  // z-component force to be 0
 
-    // temp [DBG]
-    //Info << k << " UAVG = " <<  Uavg[k]  << endl;
 }
 
 
 Info << "min/max  Uavg = " << umin << ", " <<  umax << endl; 
 Info << "====================================== " << endl;
-
-Info <<  " Lmax=" << Lmin  << " Lmax=" << Lmax  << endl;
-
-
-
-//Info << "min/max  XYZ  =" << min(mesh.C()).value() << ", " <<  max(mesh.C()).value()  << endl;
-//Info<< " min/max  U = "   << min(U).value()   << ", " << max(U).value()   << endl;
 

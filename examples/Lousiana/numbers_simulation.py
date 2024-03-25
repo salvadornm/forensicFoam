@@ -220,7 +220,7 @@ print(" Y  CO2 H2O N2    MASS FRACTION")
 print(Y_co2,Y_h2o,Y_n2," [-]")
 
 T_unburn = 300
-T_burn   = 1900 *0.8 # not adiabatic  (large heat losses)
+T_burn   = 1900 *0.5 # not adiabatic  (large heat losses)
 
 rho_unburn = 1.808   # kg/m3 density
 rho_burn   = rho_unburn*T_unburn/T_burn
