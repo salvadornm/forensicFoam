@@ -47,9 +47,9 @@ forAll(mesh.C(),cellI)
     // In BUFFER AREA NEAR BOUNDARIES in X-Y
     // force more
     Fwind[cellI] += (Uw -U[cellI])*otaufbuf*damp;                
-    // add  small randomness (10% intensity) in buffer
+    // add  small randomness in buffer
     scalar auxr=auxrand.scalarNormal(); 
-    Fwind[cellI] += auxr*Uw*0.1*damp*otauf;// dived by dt
+    Fwind[cellI] += auxr*TIrmsbuf*Uw*damp*otauf;// divived by 10
 }
 //
 }

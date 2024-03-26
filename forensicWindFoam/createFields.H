@@ -165,11 +165,9 @@ scalarField Tavg(nzprof);    // aux array storing Tavg(z)
 const scalar Lz=max(mesh.C()).value()[2];  // size of domain in Z
 const vector Lmax = max(mesh.C()).value();
 const vector Lmin = min(mesh.C()).value();
-const scalar XBUF = 500;const scalar YBUF = 400;const scalar ZBUF = 100;
 const scalar deg2rad = 0.5*3.141592/90;
 Random auxrand(1);
 
-Info<< " Reading Wind Data \n " <<  endl;
 // arrays to store wind data
 const int nmaxwindsteps=30; // max number of data stored
 float wind_speed[nmaxwindsteps],wind_ang[nmaxwindsteps],wind_T[nmaxwindsteps];
@@ -179,20 +177,59 @@ int windsteps=0;   // number of wind steps in file (to read in file)
 int currentwindstep = 0; // actual  wind step
 int variable_wind = 0;   // variable wind
 int nudging = 1;         // force 
+const scalar XBUF = 500;const scalar YBUF = 400;const scalar ZBUF = 100;
+float TIrmsbuf = 0.1;
 
 
 // manually adjust number of steps/parameters ------------//
-windsteps = 24;      // number of wind hours read
-variable_wind =1;    // variable wind
-currentwindstep = 8; //  current wind step (for restarts)
-nudging = 1;         // nudging off
-time0wind = currentwindstep*3600;  //time0 wind (usually 0)
+windsteps = 0;      // number of wind hours read
+variable_wind =0;    // variable wind
+currentwindstep = 0; //  current wind step (for restarts)
+nudging = 0;         // nudging off
+TIrmsbuf = 0.00;    // Turbulence intesnsity noise buffer
 //------------------------------------------------------//
+// rad from file parmeter.
 
+Info<< "Reading Parameter Data \n " <<  endl;
+std::ifstream fin2("param.dat"); // Open the file
+string line;
+
+// list of keywords
+enum string_code {
+    ewindsteps,
+    evariable_wind,
+    ecurrentwindstep,
+    enudging,
+    eTIrmsbuf
+};
+
+// discard first line (header)
+getline(fin2,line);
+
+std::string var_name, discard;float value;
+
+while ( fin2 >> var_name >> value)
+{
+  if (var_name== "windsteps")  windsteps = value;
+  if (var_name== "variable_wind")  variable_wind = value;
+  if (var_name== "currentwindstep")  currentwindstep = value;
+  if (var_name== "nudging")  nudging = value;
+  if (var_name== "TIrmsbuf")  TIrmsbuf = value;
+}
+fin2.close();
+
+Info<< "  DATA-> windsteps=  " << windsteps <<  endl;
+Info<< "  DATA-> variable_wind=  " << variable_wind <<  endl;
+Info<< "  DATA-> currentwindstep=  " << currentwindstep <<  endl;
+Info<< "  DATA-> nudging=  " << nudging <<  endl;
+Info<< "  DATA-> TIrmsbuf=  " << TIrmsbuf <<  endl;
+
+time0wind = currentwindstep*3600;  //time0 wind (usually 0)
+
+Info<< "Reading Wind Data \n " <<  endl;
 
 // READ DATA 
 std::ifstream fin("wind.dat"); // Open the file
-string line;
     
 if (!fin.is_open()) {
     std::cerr << "Error opening Wind file." << std::endl;

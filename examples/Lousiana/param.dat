@@ -1,0 +1,6 @@
+# parameter file for forensicWindFOAM
+windsteps  20       // number of wind hours read
+variable_wind 1     // variable wind
+currentwindstep  0  //  current wind step (for restarts)
+nudging  1          // nudging model on/off
+TIrmsbuf  0.05      // Turbulence intesnsity noise buffer
