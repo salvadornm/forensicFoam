@@ -14,8 +14,10 @@ const scalar Ustar =  kappa*Vref/std::log((Zref+z0)/z0);
 
 windangle = windangle*deg2rad;
 // nudging model comstant
-const scalar otauf    = 1.0/10.0;  // tau=10 secs
+const scalar otauf    = 1.0/30.0;  // tau=10 secs
 const scalar otaufbuf = 1.0/5.0;   // tau=3 secs (buffer)
+scalar dt0 = runTime.deltaTValue();
+scalar o_taubuf = otaufbuf/(1.0 + otaufbuf*dt0);
 
 scalar udir = std::sin(windangle);
 scalar vdir = std::cos(windangle);
@@ -46,10 +48,13 @@ forAll(mesh.C(),cellI)
 
     // In BUFFER AREA NEAR BOUNDARIES in X-Y
     // force more
-    Fwind[cellI] += (Uw -U[cellI])*otaufbuf*damp;                
+    Fwind[cellI] += (Uw -U[cellI])*damp*o_taubuf;                
     // add  small randomness in buffer
+    if (z < Zref) 
+    {
     scalar auxr=auxrand.scalarNormal(); 
-    Fwind[cellI] += auxr*TIrmsbuf*Uw*damp*otauf;// divived by 10
+    Fwind[cellI] += auxr*TIrmsbuf*Uw*damp*otauf;
+    }
 }
 //
 }

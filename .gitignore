@@ -1,3 +1,4 @@
 # work dir
 work/*
-forensicWindFoam/Make/linux64GccDPInt32Opt/forensicWindFoam.o
+forensicWindFoam/Make/linux64GccDPInt32Opt/*
+
