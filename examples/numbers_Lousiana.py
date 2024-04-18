@@ -11,7 +11,7 @@ def xy_latlong(proj,lat,long,x0,y0):
     return (xrel,yrel)
 #-------------------------------------
 
-# Compute Mean moelcular weight
+# Compute Mean molecular weight
 #-------------------------------------
 def comp_MMW(x,mw,nspecies):
     MMW = 0.0
