@@ -1,0 +1,7 @@
+# parameter file for forensicWindFOAM
+windsteps  24       
+variable_wind 1     
+currentwindstep  6  
+nudging  1          
+TIrmsbuf  0.05
+continuerun 0     

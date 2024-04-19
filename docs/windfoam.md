@@ -4,6 +4,16 @@
 Terrain from STL file
 
 
+The mesh is stored in **constant/polyMesh**
+
+NOTE: The `./Allclean` script will delete the mesh, careful with it
+
+
+## Patches and sets
+
+Required for boundary conditions
+
+
 ## ABL
 
 
@@ -32,15 +42,46 @@ The **param.dat** contaisn parameter simulation
 
 ```
 # parameter file for forensicWindFOAM
-windsteps  20       // number of wind hours read
-variable_wind 1     // variable wind
-currentwindstep  0  //  current wind step (for restarts)
-nudging  1          // nudging model on/off
-TIrmsbuf  0.05      // Turbulence intesnsity noise buffer
+windsteps  20       
+variable_wind 1     
+currentwindstep  0  
+nudging  1          
+TIrmsbuf  0.05      
+continuerun 0
+```
+
+### Problem definition
+
+
+
+| Option                      | Type          | Default | Description                                                  |
+| --------------------------- | ------------- |:-------:| ------------------------------------------------------------ |
+| **windsteps**                   | Int           |  0       | number of hours/step to read in the **wind.dat** file, by default hours                         |
+
+## Run
+
+
+Decompose the solution
+
+```bash
+$ decomposePar
+```
+
+Run in parallel
+
+```bash
+$ mpiexec -np 16 forensicWindFoam -parallel 
+```
+
+Reconstruct the solution
+
+```bash
+$ reconstructPar
 ```
 
 
 
+### BC
 
 
 

@@ -1,0 +1,42 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      topoSetDict.union;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+actions
+(
+    // determine c1
+     {
+        name    cc1;
+        type    faceSet;
+        action  new;
+        source  patchToFace;
+        sourceInfo
+        {
+          name terrain;
+        }
+     }
+     // keep in tank1 all faces in c1
+     {
+        name    tank1;
+        type    faceSet;
+        action  subset;
+        source  faceToFace;
+        sourceInfo
+        {
+          set cc1;
+          option all;
+        }
+    }
+);
+

@@ -1,0 +1,106 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+Tatm 300;               // 25 degrees
+Tground 309.787196;     // ground is hotter  DATA
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform $Tatm;
+
+boundaryField
+{
+    
+    top
+    {
+       // type            fixedValue;
+       // value           uniform $Tatm;
+        type           zeroGradient;
+    }
+
+    "(bottom|terrain)"
+    {
+      //  type           zeroGradient;
+       type            fixedValue;
+       value           uniform $Tground;
+    }
+
+   "(north|south)"
+    {
+        type            zeroGradient;
+    }
+
+    "(east|west)"
+    {
+        type            zeroGradient;
+    }
+
+
+    default
+    {
+        type            zeroGradient;
+    }
+
+    tank1
+    {
+        type            fixedValue;
+        value           uniform 1173.15;
+    }
+    
+    tank2
+    {
+        type            fixedValue;
+        value           uniform 1173.15;
+    }
+
+
+    tank111
+    {
+        type            uniformFixedValue;
+        uniformValue    coded;
+        name            sal;    
+        code 
+        #{          
+
+          const scalar Us = 1200;
+          const scalar Umax =1300;
+          const scalar a = 10;
+          const scalar b = 5;
+          const scalar xs= 1;
+
+           return scalar
+        (
+            min(Us + a*x*x,Umax)  -  max(x-xs,0)*b*(x-xs)
+        );
+
+        #};
+    } 
+
+
+
+
+  
+
+    containment
+    {
+	    type            fixedValue;
+        value           uniform  1100.15;
+    }
+
+}
+
+
+// ************************************************************************* //
