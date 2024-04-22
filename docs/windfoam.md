@@ -56,7 +56,10 @@ continuerun 0
 
 | Option                      | Type          | Default | Description                                                  |
 | --------------------------- | ------------- |:-------:| ------------------------------------------------------------ |
-| **windsteps**                   | Int           |  0       | number of hours/step to read in the **wind.dat** file, by default hours                         |
+| **windsteps**                   | Int           |  0       | number of hours/step to read in the **wind.dat** file, by default hours         |
+| **currentwindstep**                   | Int           |  0       | current time in the wind      |
+| **continuerun**                   | Int           |  0       | if continuerun=1, then windtime will be absolute                        |
+
 
 ## Run
 
@@ -82,6 +85,42 @@ $ reconstructPar
 
 
 ### BC
+
+Example of a unstaedy boyndary condtion on velocityy with an square growth in time
+and decay with a steady state in the middle.
+
+```cpp
+tank1
+    {
+        type            uniformFixedValue;
+        uniformValue    coded;
+        name            tankfire;    
+        code 
+        #{                                
+            vector Unit,Umax;
+	        const scalar Vpeak =  0.41855; //<-------------------------
+            const scalar t0 = 6.5*3600;    // 6:30    start sim
+            const scalar ts = 8.5*3600;    // 8:30    start tank fire
+            const scalar t1 = 10.5*3600;   // 10:30   end growth phase
+            const scalar t2 = 13.5*3600;   // 13:30   star decay
+            const scalar t3 = 23.5*3600;   // 23:30   end
+            
+            const scalar a = 1/((t1-ts)*(t1-ts));
+            const scalar b = 1/((t3-t2)*(t3-t2));
+            const scalar small = 0.00001;
+                    
+            Unit[0] = 1.0;Unit[1]=1.0;Unit[2]=1.0;   
+            Umax[0] = 0.0;Umax[1]=0.0;Umax[2]=Vpeak; 
+
+          return vector
+       (
+         max(x-ts+small,0)/(x-ts) * (min(Unit*a*(x-ts)*(x-ts),Umax)  - Umax*max(x-t2,0)*b*(x-t2) ) 
+       );
+
+        #};
+    } 
+```
+
 
 
 

@@ -177,7 +177,7 @@ int windsteps=0;   // number of wind steps in file (to read in file)
 int currentwindstep = 0; // actual  wind step
 int variable_wind = 0;   // variable wind
 int nudging = 1;         // force 
-int continuerun = 0;    // do not conintue a run
+int continuerun = 0;    // do not continue a run
 const scalar XBUF = 500;const scalar YBUF = 400;const scalar ZBUF = 2000;
 float TIrmsbuf = 0.1;
 
@@ -229,7 +229,7 @@ Info<< "  DATA-> continuerun=  " << continuerun <<  endl;
 
 time0wind = currentwindstep*3600;  //time0 wind (usually 0)
 
-if (continuerun) time0wind = 0;
+if (continuerun==1) time0wind = 0;
 
 
 Info<< "Reading Wind Data \n " <<  endl;
