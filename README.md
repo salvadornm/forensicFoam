@@ -1,2 +1,2 @@
 # forensicFoam
-OpenFOAM code to forensic fluids
+OpenFOAM code to model atmospherics, buoyant flows concerned with forensic

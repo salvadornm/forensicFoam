@@ -1,6 +1,3 @@
-# Documentation
-
-AMReX-based Navier-Stokes Reactive compressible LES code 
 
 --8<-- "README.md"
 
@@ -20,11 +17,14 @@ or Download the latest release from [GitHub](https://github.com/salvadornm/foren
 
 ## Install OpenFOAM
 
+Follow instructions in openfoam.org site. Install OpenFoam 10 following
+[Download Archive](https://openfoam.org/download/archive/)
+
 
 ### Visualization
-[Paraview](https://www.paraview.org), 
+[Paraview](https://www.paraview.org), this will be installed by default if OpenFOAM is downloaded and installed. Is teh option used in most OpenfFOAM tutorials. 
 
-[VisIt](https://visit-dav.github.io/visit-website/), 
+[VisIt](https://visit-dav.github.io/visit-website/) 
 
 
 ## Documentation Editing

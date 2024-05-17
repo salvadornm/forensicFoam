@@ -2,6 +2,7 @@ site_name: forensicFoam
 nav:
   - Home: index.md
   - WindFoam: windfoam.md
+  - Plot: plot.md
 extra_javascript:
   - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML
 markdown_extensions:
