@@ -22,9 +22,11 @@ Follow instructions in openfoam.org site. Install OpenFoam 10 following
 
 
 ### Visualization
-[Paraview](https://www.paraview.org), this will be installed by default if OpenFOAM is downloaded and installed. Is teh option used in most OpenfFOAM tutorials. 
+[Paraview](https://www.paraview.org), this will be installed by default if OpenFOAM is downloaded and installed. Is the option used in most OpenfFOAM tutorials. It can be invokes by typing ```paraFoam``` in the command line inside the directory to see the results.
 
-[VisIt](https://visit-dav.github.io/visit-website/) 
+[VisIt](https://visit-dav.github.io/visit-website/) To see the results, open the **system/controlDict** file in the folder to see. The number of options in Visit is less than Paraview (for example only scalars are opened) but often is enough.
+
+
 
 
 ## Documentation Editing

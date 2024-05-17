@@ -150,10 +150,14 @@ print("------------------------------------")
 Dtank1 = 70.5  #m
 # TANK 2 (300-7)   Low Sulfur Diesel
 Dtank2 = 46.0  # m
+# TANK 3 (200-7)   Gas-oil
+Dtank3 = 52.0 #m
 
 # AREAS
 Areatank1 = math.pi*Dtank1*Dtank1*0.25  #m2
 Areatank2 = math.pi*Dtank2*Dtank2*0.25  #m2
+Areatank3 = math.pi*Dtank3*Dtank3*0.25  #m2
+
 Areacont = 17000 # m2 (estimate from STL)
 
 # quantities
@@ -389,6 +393,7 @@ ndot_tank1 = mdot_tank1/M_naphta
 ndot_air = n_air*ndot_tank1
 mdot_air = ndot_air*M_air
 
+
 print(" mdot tank1 ", mdot_tank1," mdot_air",mdot_air, " [kg/s]")
 
 mdot_mixture = mdot_tank1 + mdot_air
@@ -603,13 +608,99 @@ rhoU = mdot_mixture/Areatank2  # kg/m2 s
 
 Vtank2= rhoU/rho_burn
 
-print(" Tank 1 (150-11) velocity  = ",Vtank2, " [m/s]")
+print(" Tank 2 (300-7) velocity  = ",Vtank2, " [m/s]")
 print("                 velocity MAX = ",Vtank2*rmax, " [m/s]")
 
+print("------------------------------------")
+print("  TANK 3 (gasoil)")
+print("------------------------------------")
+x_tank3 = array('f',[0.0,0.0,0.0,0.0]) 
+y_tank3 = array('f',[0.0,0.0,0.0,0.0]) 
 
+# CnHm
+# CnHn + (n + m/4)  (O2 + 3.76 N2) => n CO2 + m/2 H2O +  (n + m/4) *3.76*N2
+# 1 mol alkene reacts n+m/4 mols air, n mols CO2, m/2 mols H2O , (n + m/4) *3.76  mols N2 
+# Closest alkene to gasoil is C12H23
+n=12
+m=23
+
+M_gasoil = n*Mc+ m*Mh
+
+print(" M_gasoil    :",M_gasoil)
+
+n_air = n + m/4
+n_co2 = n
+n_h2o = m/2
+n_n2  = n_air*79/21
+n_o2  = 0
+ntot = n_co2 + n_h2o + n_n2
+
+n_mol[iO2]  = n_o2
+n_mol[iN2]  = n_n2
+n_mol[iH2O] = n_h2o
+n_mol[iCO2] = n_co2
+
+# mole fraction and mean molecular weight
+for i in range(nspecies):
+   x_tank3[i] = n_mol[i]/ntot
+
+MMW = comp_MMW(x_tank3,mol_weight,nspecies)
+
+# mass fraction
+for i in range(nspecies):
+   y_tank3[i] = x_tank3[i]*mol_weight[i]/MMW
+
+# plot
+for i in range(nspecies):
+   print(names_spec[i]," = ",x_tank3[i],y_tank3[i])    
+
+## Temperature and Density  TANK3
+
+#  2469 K is adaibatic T at Stoichiometric
+#  images show orange flames appox 900 C 
+Ttank3 = 900 + T0 
+
+rho_unburn = P0*M_gasoil/Runi/Tatm/1000
+
+print(" rho Gasoil unburn  ",rho_unburn," [kg/m3]")
+
+rho_burn   = P0*MMW/Runi/Ttank3/1000
+
+print(" rho burn (combustion gases)", rho_burn," [kg/m3]")
+
+mass_tank3 = 2300000  # lbs  <-------------------
+mass_tank3 = mass_tank3*unit_lbs2kg   # mass burned in kg
+
+print(" mass tank3 = ",mass_tank3, " in kg ")
+
+# mass_tank3 is the quantity of gasoil in tank 3 
+# burn over 3 hours
+
+time_burn = 3 #h  from 1:30 (approx) to 4:30
+time_burn = time_burn*unit_h2sec
+
+mdot_tank3 = mass_tank3/time_burn
+
+print(" mdot [TANK3 average] = ",mdot_tank3, " [kg/s] ")
+
+ndot_tank3 = mdot_tank3/M_gasoil
+ndot_air = n_air*ndot_tank3
+mdot_air = ndot_air*M_air
+
+print(" mdot tank3 ", mdot_tank3," mdot_air",mdot_air, " [kg/s]")
+
+mdot_mixture = mdot_tank3 + mdot_air
+print(" TOTAL MASS = ",mdot_mixture, " [kg/s]")
+
+
+rhoU = mdot_mixture/Areatank3  # kg/m2 s
+
+Vtank3= rhoU/rho_burn
+
+print(" Tank 3 (200-7) velocity  = ",Vtank3, " [m/s]")
+print("                velocity MAX = ",Vtank3*rmax, " [m/s]")
 
 # pollutants
-
 
 print("------------------------------------------")
 
@@ -632,7 +723,6 @@ print( " 0/YN2  ",y_cont[iN2])
 print( " 0/YO2  ",y_cont[iO2])
 print( " 0/YH2O ",y_cont[iH2O])
 print( " ---------------------- ")
-print( " ---------------------- ")
 print( " patch tank2 (TANK 300-7)")
 print( " 0/U ",Vtank2)
 print( " 0/T ",Ttank2)
@@ -640,6 +730,14 @@ print( " 0/YCO2 ",y_tank2[iCO2])
 print( " 0/YN2  ",y_tank2[iN2])
 print( " 0/YO2  ",y_tank2[iO2])
 print( " 0/YH2O ",y_tank2[iH2O])
+print( " ---------------------- ")
+print( " patch tank3 (TANK 200-7)")
+print( " 0/U ",Vtank3)
+print( " 0/T ",Ttank3)
+print( " 0/YCO2 ",y_tank3[iCO2])
+print( " 0/YN2  ",y_tank3[iN2])
+print( " 0/YO2  ",y_tank3[iO2])
+print( " 0/YH2O ",y_tank3[iH2O])
 print( " ---------------------- ")
 
 print( " 0/YCO ",y_e[iCO])
@@ -649,6 +747,7 @@ print( " 0/YBz ",y_e[iBz])
 print( " 0/YXy ",y_e[iXy])
 
 print( " ---------------------- ")
+
 
 
 

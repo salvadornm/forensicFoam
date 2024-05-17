@@ -19,12 +19,20 @@ Required for boundary conditions
 
 ## Nudging Model
 
+The nudging volume is a force volume to adjust the main flow to the
+measured wind speed.
+
+EQUATION HERE
+
+Where the average is average on teh x-y plane, where z is the direction
+perpendicular to the floor.
+
 
 ### Buffer Area
 
 ## Wind files (wind.dat)
 
-It needs **wind.dat**,  four column file, with time, wind, wind direction and ground temperature.
+It needs **wind.dat**,  four column file, with time (in hours), wind speed at 100 m, wind direction and ground temperature.
 
 ```
 #TIME   WIND(100 m)      WIND(degrees)  TGROUND
@@ -38,7 +46,7 @@ It needs **wind.dat**,  four column file, with time, wind, wind direction and gr
 
 ## Parameter file
 
-The **param.dat** contaisn parameter simulation
+The **param.dat** contains parameters for the simulation regarding the wind and files.
 
 ```
 # parameter file for forensicWindFOAM
@@ -64,13 +72,14 @@ continuerun 0
 ## Run
 
 
-Decompose the solution
+Decompose the problem in the number of processors specified by 
+**decomposeParDict**
 
 ```bash
 $ decomposePar
 ```
 
-Run in parallel
+Run in parallel, in this case with 16 cores.
 
 ```bash
 $ mpiexec -np 16 forensicWindFoam -parallel 
@@ -86,8 +95,7 @@ $ reconstructPar
 
 ### BC
 
-Example of a unstaedy boyndary condtion on velocityy with an square growth in time
-and decay with a steady state in the middle.
+Example of a unsteady boundary condtion on velocity with an square growth and decay in time, with a steady state in the middle.
 
 ```cpp
 tank1

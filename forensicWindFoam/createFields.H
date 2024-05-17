@@ -169,7 +169,7 @@ const scalar deg2rad = 0.5*3.141592/90;
 Random auxrand(1);
 
 // arrays to store wind data
-const int nmaxwindsteps=30; // max number of data stored
+const int nmaxwindsteps=100; // max number of data stored
 float wind_speed[nmaxwindsteps],wind_ang[nmaxwindsteps],wind_T[nmaxwindsteps];
 float wind_time[nmaxwindsteps];
 float wind_speedT,wind_angT,wind_TT,time0wind;
