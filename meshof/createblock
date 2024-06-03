@@ -1,1 +1,0 @@
-cat aux/ofheader fort.77 fort.78 aux/defpatch fort.79 > blockMeshDict

@@ -1,3 +1,0 @@
-SOURCE += forensicWindFoam.C
-
-EXE = $(FOAM_USER_APPBIN)/forensicWindFoam

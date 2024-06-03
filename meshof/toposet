@@ -1,7 +1,0 @@
-    {
-        name    faulty;
-        type    faceSet;
-        action  new;
-        source  boxToFace;
-        box     (3.914 -0.192 1.25)(4.364 -0.188 1.480);    
-    } 

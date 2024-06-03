@@ -1,0 +1,6 @@
+defaultPatch
+{
+    name default; // optional
+    type patch;
+}
+

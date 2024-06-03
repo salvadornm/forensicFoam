@@ -169,3 +169,13 @@ createPatch -overwrite
 ```
 
 to create a new patch **tank** that can be used for BC, etc.
+
+
+
+# Example
+
+STL terrain file
+![mesh](figs/terrain.png)
+
+Mesh after using SnappyHexMesh
+![mesh](figs/meshterrain.png)
