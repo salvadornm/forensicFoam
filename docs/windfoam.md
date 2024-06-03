@@ -1,20 +1,8 @@
 
-## Grid
-
-Terrain from STL file
+# Model Summary
 
 
-The mesh is stored in **constant/polyMesh**
-
-NOTE: The `./Allclean` script will delete the mesh, careful with it
-
-
-## Patches and sets
-
-Required for boundary conditions
-
-
-## ABL
+![model](figs/windFoam.png)
 
 
 ## Nudging Model
@@ -24,7 +12,7 @@ measured wind speed.
 
 EQUATION HERE
 
-Where the average is average on teh x-y plane, where z is the direction
+Where the average is average on the x-y plane, where z is the direction
 perpendicular to the floor.
 
 

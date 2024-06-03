@@ -10,15 +10,11 @@ Download the latest version on the master branch using GitHub CLI
 $ gh repo clone salvadornm/forensicFoam
 ```
 
-
 or Download the latest release from [GitHub](https://github.com/salvadornm/forensicFoam/releases)
 
+The code has been tested in [OpenFoam10](https://doc.cfd.direct/openfoam/user-guide-v10/), 
+check [OpenFOAM](openfoam.md) to have a summary.
 
-
-## Install OpenFOAM
-
-Follow instructions in openfoam.org site. Install OpenFoam 10 following
-[Download Archive](https://openfoam.org/download/archive/)
 
 
 ### Visualization
