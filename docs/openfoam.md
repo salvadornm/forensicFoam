@@ -122,3 +122,19 @@ Then run
 
 The packaged distributions of OpenFOAM for Ubuntu can now be installed directly on Microsoft Windows 10 using Windows Subsystem for Linux (WSL).
 
+
+# More information
+
+Good links for basic OpenFOAM learning
+
+https://holzmann-cfd.com/community/learn-openfoam
+
+https://openfoamwiki.net/index.php/Main_Page
+
+Intersting YouTube OpenFOAM channels, with tutorials, post-processing
+
+https://www.youtube.com/channel/UCjdgpuxuAxH9BqheyE82Vvw
+
+https://www.youtube.com/user/HolzmannCFD
+
+

@@ -18,14 +18,14 @@ check [OpenFOAM](openfoam.md) to have a summary.
 
 
 ### Visualization
-[Paraview](https://www.paraview.org), this will be installed by default if OpenFOAM is downloaded and installed. Is the option used in most OpenfFOAM tutorials. It can be invokes by typing ```paraFoam``` in the command line inside the directory to see the results.
+[Paraview](https://www.paraview.org), this will be installed by default if OpenFOAM is downloaded and installed. Is the option used in most OpenfFOAM tutorials. It can be invoked by typing ```paraFoam``` in the command line inside the directory to see the results.
 
-[VisIt](https://visit-dav.github.io/visit-website/) To see the results, open the **system/controlDict** file in the folder to see. The number of options in Visit is less than Paraview (for example only scalars are opened) but often is enough.
-
-
+[VisIt](https://visit-dav.github.io/visit-website/) To see the results, open the **system/controlDict** file in the folder to see. The number of options in Visit is less than Paraview (for example only scalars are opened) but is often simpler.
 
 
-## Documentation Editing
+
+
+### Documentation Editing
 
 For help editing the documentation visit [mkdocs.org](https://www.mkdocs.org). To generate the docs locally `mkdocs serve`
 and point the browser to [127.0.0.1.8000](http://127.0.0.1:8000)
