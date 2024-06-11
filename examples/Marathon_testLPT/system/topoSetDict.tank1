@@ -1,0 +1,32 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      topoSetDict.tank1;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    {
+        name    tank1;
+        type    faceSet;
+        action  new;
+        source  cylinderToFace;
+        p1 (4697 2272 10.0);
+        p2 (4697 2272 40.0);
+        radius 36;
+    }
+);
+
+// ************************************************************************* //
+//  5343.3 2700.7  TO USE WITH STL TERRAIN//
+// firt tank then union??///

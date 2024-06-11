@@ -1,0 +1,45 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      topoSetDict.union1;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(    
+  // create temp1 set with terrain faces (this is done as this mods temp1)
+  {
+    name    temp1;
+    type    faceSet;
+    action  new;
+    source  patchToFace;
+    sourceInfo
+      {
+      name terrain;
+      }
+  }   
+  // keep in tank1 only faces intersectuin with temp1 (terrain)    
+  {
+    name    tank1;
+    type    faceSet;
+    action  subset;
+    source  faceToFace;
+	  sourceInfo  
+	  {
+	  set temp1;
+	  option all;
+	  }
+  }
+);
+
+// ************************************************************************* //
+// use terrain and tank1 topo before//

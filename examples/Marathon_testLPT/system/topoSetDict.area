@@ -1,0 +1,40 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      topoSetDict.area;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+     // create cells Set from inside STL file
+     {
+        name    mapa;
+        type    cellSet;
+        action  new;
+        source surfaceToCell;
+        sourceInfo
+          {
+          file "cont.stl";
+          outsidePoints ((4800 2000 200));
+          includeCut true;
+          includeInside true;
+          includeOutside false;
+          nearDistance 5;
+          curvature -100;
+          useSurfaceOrientation false;
+          }
+     }
+);
+
+// ************************************************************************* //
+// use terrain and tank1 topo before//

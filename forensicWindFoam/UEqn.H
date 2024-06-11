@@ -1,7 +1,6 @@
 //  ...... Solve the Momentum equation    // 
 
 // -----      DATA FROM FILE                    ----//
-//const scalar Vref = 3.124100; scalar windangle = 140.194430;
 const scalar Vref = wind_speedT; scalar windangle = wind_angT;
 
 // -

@@ -750,6 +750,50 @@ print( " ---------------------- ")
 
 
 
+Benzene_Intermediate_ppm=0.006 # ppm
+
+mol_weight_Benzen = 78.1
+rhoair= 1.2
+
+Benzene_Intermediate_conc=Benzene_Intermediate_ppm/24.5*mol_weight_Benzen
+print(" Conc= ",Benzene_Intermediate_ppm," [ppm] ")
+print(" Conc= ",Benzene_Intermediate_conc," [mg/m3]")
+print(" Conc= ",Benzene_Intermediate_conc/rhoair," [mg/kg air]")
+print(" Y = ",Benzene_Intermediate_conc*1e-6/rhoair," [kg /kg air]")
+
+print( " ---------------------- ")
+print( "  PM 2.5  ")
+print("------------------------------------  ")
+# PM2.5 concentration
+C_PM= 0.5e-6    # kg PM/ m3 mixture  500 mg/m3
+rho_PM = 1000   # density PM kg/m3  (1 g/cm3)
+d_PM = 2.5e-6   #  PM2.5
+vol_PM =  math.pi*d_PM**3/6 
+mass_PM = rho_PM*vol_PM # mass PM particle
+
+#mdot = Cpm*U*A  kg PM/s
+
+mdot_PM = C_PM*Vtank1*Areatank1
+ndot_PM = mdot_PM/mass_PM
+
+print(" TANK1 mdot(PM) ",mdot_PM," [kg/s] or ",ndot_PM/1e6," M parts/sec")
+
+mdot_PM = C_PM*Vtank2*Areatank2
+ndot_PM = mdot_PM/mass_PM
+
+print(" TANK2 mdot(PM) ",mdot_PM," [kg/s] or ",ndot_PM/1e6," M parts/sec")
+
+mdot_PM = C_PM*Vcont*Areacont
+ndot_PM = mdot_PM/mass_PM
+
+print(" CONT mdot(PM) ",mdot_PM," [kg/s] or ",ndot_PM/1e6," M parts/sec")
+
+parcel_pers = 1
+
+nparcel = ndot_PM/parcel_pers
+
+print(" particles per parcel =",nparcel/1e9, " BILLION")
+
 
 
 

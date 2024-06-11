@@ -1,0 +1,4 @@
+touch case.foam
+foamToVTK
+rm VTK/*_0.vtk
+rm VTK/lagrangian/cloud/cloud_0.vtk
