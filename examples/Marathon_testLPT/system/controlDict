@@ -13,21 +13,21 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     forensicWindFoam;
+application     forensicParticleFoam;
 
-startFrom       latestTime;
+startFrom       startTime;
 
-startTime       0.0;
+startTime       23400.0;
 
 stopAt          endTime;
 
-endTime         86400.0;
+endTime         30000.0;
 
 deltaT          1.0;
 
 writeControl    adjustableRunTime;
 
-writeInterval   30.0; //120
+writeInterval   300.0; 
 
 purgeWrite      0;
 
@@ -47,7 +47,7 @@ runTimeModifiable yes;
 
 adjustTimeStep  yes; /// <<<<<<<---- variable dt
 
-maxCo           2.9;
+maxCo           0.6;
 
 maxDeltaT       10.0;
 

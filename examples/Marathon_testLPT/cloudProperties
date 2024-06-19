@@ -1,0 +1,162 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  10
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      cloudProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+type        cloud;
+
+solution
+{
+    coupled         false;
+    transient       yes;
+    cellValueSourceCorrection off;
+    maxCo           0.3;
+
+    interpolationSchemes
+    {
+        rho             cell;
+        U               cellPoint;
+        thermo:mu        cell;
+    }
+
+    integrationSchemes
+    {
+        U               Euler;
+    }
+}
+
+constantProperties
+{
+    rho0            1000;
+}
+
+subModels
+{
+    particleForces
+    {
+        sphereDrag;
+
+        gravity;
+    }
+
+    injectionModels
+    {
+        model1
+        {
+            type            patchInjection; 
+            massTotal       0;
+            SOI             30000; 
+            duration        14400;           
+            parcelBasisType fixed;
+            nParticle       1;
+            parcelsPerSecond 4;
+            patchName       tank1;
+            U0              (0. 0. 0.5);
+            flowRateProfile constant 1;
+            sizeDistribution
+            {
+                type        fixedValue;
+                fixedValueDistribution
+                {
+                    value       2.5e-6;
+                }
+            }
+        }
+        model2
+        {
+            type            patchInjection; 
+            massTotal       0;
+            SOI             30000; 
+            duration        14400;           
+            parcelBasisType fixed;
+            nParticle       1;
+            parcelsPerSecond 17;
+            patchName       tank2;
+            U0              (0. 0. 0.5);
+            flowRateProfile constant 1;
+            sizeDistribution
+            {
+                type        fixedValue;
+                fixedValueDistribution
+                {
+                    value       2.5e-6;
+                }
+            }
+        }
+        model3
+        {
+            type            patchInjection; 
+            massTotal       0;
+            SOI             23400; 
+            duration        14400;           
+            parcelBasisType fixed;
+            nParticle       1;
+            parcelsPerSecond 25;
+            patchName       containment;
+            U0              (0. 0. 0.01);
+            flowRateProfile constant 1;
+            sizeDistribution
+            {
+                type        fixedValue;
+                fixedValueDistribution
+                {
+                    value       2.5e-6;
+                }
+            }
+        }
+
+    }
+
+    //dispersionModel stochasticDispersionRAS;
+    dispersionModel none;
+    
+
+    patchInteractionModel localInteraction;
+
+    localInteractionCoeffs
+    {
+    patches
+    (
+        "(tank1|tank2|containment)"
+        {
+            type  stick;
+        }
+
+        "(north|south|east|west)"
+        {
+            type escape;
+        }
+
+        "(terrain|bottom)"
+        {
+            type stick;
+        }
+
+        top
+        {
+            type escape;
+        }
+
+    );
+
+    }
+
+
+    surfaceFilmModel none;
+
+    stochasticCollisionModel none;
+}
+
+
+// ************************************************************************* //

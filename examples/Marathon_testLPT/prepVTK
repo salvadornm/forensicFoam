@@ -1,0 +1,3 @@
+rm -rf VTK
+foamToVTK -noZero -fields '(p T U)'
+rm VTK/lagrangian/cloud/cloud_0.vtk
