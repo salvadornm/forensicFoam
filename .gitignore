@@ -4,5 +4,6 @@ tools/simple_mesh/*.o
 tools/simple_mesh/a.out
 forensicWindFoam/Make/linux64GccDPInt32Opt/*
 forensicFoam/Make/linux64GccDPInt32Opt/*
+forensicParticleFoam/Make/linux64GccDPInt32Opt/*
 
 

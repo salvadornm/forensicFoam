@@ -95,6 +95,8 @@
         "cinttypes": "cpp",
         "filesystem": "cpp",
         "__memory": "cpp",
-        "forensicFoam.C": "cpp"
+        "forensicFoam.C": "cpp",
+        "rhoParticleFoam.C": "cpp",
+        "forensicParticleFoam.C": "cpp"
     }
 }
