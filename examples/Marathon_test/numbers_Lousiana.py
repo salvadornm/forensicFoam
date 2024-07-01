@@ -765,8 +765,8 @@ print( " ---------------------- ")
 print( "  PM 2.5  ")
 print("------------------------------------  ")
 # PM2.5 concentration
-C_PM= 0.5e-6    # kg PM/ m3 mixture  500 mg/m3
-rho_PM = 1000   # density PM kg/m3  (1 g/cm3)
+C_PM= 0.5e-6    # kg PM/ m3 mixture  500 mg/m3  <--------------
+rho_PM = 3000   # density PM kg/m3  (3 g/cm3)
 d_PM = 2.5e-6   #  PM2.5
 vol_PM =  math.pi*d_PM**3/6 
 mass_PM = rho_PM*vol_PM # mass PM particle
@@ -776,25 +776,44 @@ mass_PM = rho_PM*vol_PM # mass PM particle
 mdot_PM = C_PM*Vtank1*Areatank1
 ndot_PM = mdot_PM/mass_PM
 
+ndot1 = ndot_PM
+
 print(" TANK1 mdot(PM) ",mdot_PM," [kg/s] or ",ndot_PM/1e6," M parts/sec")
 
 mdot_PM = C_PM*Vtank2*Areatank2
 ndot_PM = mdot_PM/mass_PM
+
+ndot2 = ndot_PM
 
 print(" TANK2 mdot(PM) ",mdot_PM," [kg/s] or ",ndot_PM/1e6," M parts/sec")
 
 mdot_PM = C_PM*Vcont*Areacont
 ndot_PM = mdot_PM/mass_PM
 
+ndot3 = ndot_PM
+
 print(" CONT mdot(PM) ",mdot_PM," [kg/s] or ",ndot_PM/1e6," M parts/sec")
 
-parcel_pers = 1
+parcel_pers = 100
+tank1parts = 5
 
 nparcel = ndot_PM/parcel_pers
 
-print(" particles per parcel =",nparcel/1e9, " BILLION")
+# tank 1 will have 5 particle per sec
+normfactor = ndot1/(tank1parts*parcel_pers)
 
 
+print(" normfactor =",normfactor/1e6, " MILLION ")
+
+
+print(" N1 = ",ndot1/parcel_pers)
+print(" N2 = ",ndot2/parcel_pers)
+print(" N3 = ",ndot3/parcel_pers)
+
+print(" tank1parts = ",tank1parts, " parce per s =",parcel_pers)
+print(" N1 (for openfoam)= ",ndot1/(parcel_pers*normfactor))
+print(" N2 (for openfoam)= ",ndot2/(parcel_pers*normfactor))
+print(" N3 (for openfoam)= ",ndot3/(parcel_pers*normfactor))
 
 
 print(" ---------------------------------------------------")

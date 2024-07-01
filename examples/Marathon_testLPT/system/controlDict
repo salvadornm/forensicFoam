@@ -17,13 +17,13 @@ application     forensicParticleFoam;
 
 startFrom       startTime;
 
-startTime       23400.0;
+startTime       31200.0;
 
 stopAt          endTime;
 
-endTime         30000.0;
+endTime         64500.0;
 
-deltaT          1.0;
+deltaT          5.0;
 
 writeControl    adjustableRunTime;
 

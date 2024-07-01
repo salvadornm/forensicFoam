@@ -40,18 +40,19 @@ Description
 
 int main(int argc, char *argv[])
 {
-    #define NO_CONTROL
-    #include "postProcess.H"
+#define NO_CONTROL
+#include "postProcess.H"
 
-    #include "setRootCaseLists.H"
-    #include "createTime.H"
-    #include "createMesh.H"
-    #include "createFields.H"
-    #include "compressibleCourantNo.H"
+#include "setRootCaseLists.H"
+#include "createTime.H"
+#include "createMesh.H"
+#include "createFields.H"
+#include "compressibleCourantNo.H"
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< "\nStarting time loop\n" << endl;
+    Info << "\nStarting time loop\n"
+         << endl;
 
     while (runTime.run())
     {
@@ -61,37 +62,37 @@ int main(int argc, char *argv[])
 
         runTime++;
 
-        Info<< "Time = " << runTime.userTimeName() << nl << endl;
+        Info << "Time = " << runTime.userTimeName() << nl << endl;
 
         // Move the mesh
         mesh.move();
 
-        if (mesh.changing())
-        {
-            U.correctBoundaryConditions();
-        }
-        
+        //     if (mesh.changing())
+        //     {
+        //         U.correctBoundaryConditions();
+        //      }
+
         scalar t = runTime.value();
         scalar dt = runTime.deltaTValue();
-       
-        Info<< "[SNM] time = " << t <<  " deltat=" << dt << endl;
+
+        Info << "[SNM] time = " << t << " deltat=" << dt << endl;
 
         // check time
 
         if (t >= Time2)
         {
-            indexTime1++;indexTime2++;
+            indexTime1++;
+            indexTime2++;
             Time1 = timevecDirs[indexTime1];
             Time2 = timevecDirs[indexTime2];
-            word nuevotiempo =  timeDirs[indexTime2].name();
+            word nuevotiempo = timeDirs[indexTime2].name();
 
             // Info << " U2-> U1" << endl;
-            forAll(mesh.C(),cellI)
+            forAll(mesh.C(), cellI)
             {
-            U1[cellI] = U2[cellI]; 
+                U1[cellI] = U2[cellI];
             }
             Info << " Read New U2 time = " << nuevotiempo << endl;
-
 
             // Check Limit of files
             if (indexTime2 > nDirs)
@@ -101,66 +102,109 @@ int main(int argc, char *argv[])
                 return 0;
             }
 
-
             // Dynamically allocate a new vector
-            volVectorField* U2p = new volVectorField
-            (
-                IOobject
-                (
-                "U",
-                nuevotiempo,
-                mesh,
-                IOobject::MUST_READ,
-                IOobject::NO_WRITE
-                ),
-                mesh
-            );            
-            // U2p -> U2 
-            forAll(mesh.C(),cellI)
+            volVectorField *U2p = new volVectorField(
+                IOobject(
+                    "U",
+                    nuevotiempo,
+                    mesh,
+                    IOobject::MUST_READ,
+                    IOobject::NO_WRITE),
+                mesh);
+            // U2p -> U2
+            forAll(mesh.C(), cellI)
             {
-            U2[cellI] = (*U2p)[cellI]; 
+                U2[cellI] = (*U2p)[cellI];
             }
-            // delete vector to free memory 
+            // delete vector to free memory
             delete U2p;
-            
         }
 
         // interpolation weights
-        scalar w2 = (t -Time1)/(Time2-Time1);
-        scalar w1 = 1.0 - w2; 
+        scalar w2 = (t - Time1) / (Time2 - Time1);
+        scalar w1 = 1.0 - w2;
 
         // debug lines
         // Info<< " ----  " << endl;
         // Info<< " w1= " << w1 << " and  w2=" << w2 << endl;
         // Info << " i1 and i2 = " << indexTime1 << " "  << indexTime2  << endl;
         // Info << " t1 and t2 = " << Time1 << " "  << Time2 << endl;
-        
-        // Create U by interpolation in time        
-        forAll(mesh.C(),cellI)
+
+        // vector Utemp = vector(0.0, 0.0, 0.0);
+        // scalar ux,uy,uz;
+        // scalar tau= 3.1416*t/180;
+        // ux = 5.0; uy = 0.0;uz = 5.0;
+
+        // if (t > 35000)
+        // {
+        //     ux = -5.0;
+        // }
+
+        // Utemp[0] = ux; Utemp[1] = 5*uy; Utemp[2] = uz;
+
+        // Create U by interpolation in time
+        forAll(mesh.C(), cellI)
         {
-           U[cellI] = w1*U1[cellI] + w2*U2[cellI];
+            U[cellI] = w1 * U1[cellI] + w2 * U2[cellI];
+            // U[cellI] = Utemp;
         }
 
         // debug
-        Info << "U1 = " << U1[icellexample] << endl; 
-        Info << "U  = " << U[icellexample] << endl; 
-        Info << "U2 = " << U2[icellexample] << endl; 
+        Info << "U1 = " << U1[icellexample] << endl;
+        Info << "U  = " << U[icellexample] << endl;
+        Info << "U2 = " << U2[icellexample] << endl;
 
-        scalar Zref = 1800;
-        // Info<< " Adjust top BC at z >  " << Zref << endl;
-        vector Uw = vector(0.0, 0.0, 1.0);        
-        forAll(mesh.C(),cellI)
-        {
-           const scalar z = mesh.C()[cellI].z();
-           if (z > Zref) 
-            { U[cellI] = Uw;}
-        }
+        // scalar Zref = 1800;
+        // // Info<< " Adjust top BC at z >  " << Zref << endl;
+        // vector Uw = vector(0.0, 0.0, 1.0);
+        // forAll(mesh.C(),cellI)
+        // {
+        //    const scalar z = mesh.C()[cellI].z();
+        //    if (z > Zref)
+        //     { U[cellI] = Uw;}
+        // }
 
         // ---------------------------------------------------------//
 
         clouds.evolve();
 
+        // store scalars  *********************//////////
+
+        Info << "SNM particle stats" << endl;
+
+        if (timestat > 0) 
+        { 
+            PMvfavg   = PMvfavg*timestat;
+            PMconcavg = PMconcavg*timestat;
+        }
+        timestat+=dt;        
+
+        const scalar rhopm = 3000.0;
+        const scalar normfactor = 30e6; // real particles per parcel
         
+
+        PMvf = clouds.theta()*normfactor;
+        forAll(mesh.C(), cellI)
+        {
+            PMvfavg[cellI]   += PMvf[cellI]*dt;         // no units
+            PMconc[cellI]     = PMvf[cellI]*rhopm*1e9;  // microg/m3
+            PMconcavg[cellI] += PMconc[cellI]*dt;
+        }
+        PMvfavg = PMvfavg/timestat;
+        PMconcavg = PMconcavg/timestat;
+
+        Info << " stats over t= " << timestat <<endl;
+
+         
+
+        // acessing parcelcloud
+        parcelCloud &parcels = mesh.template lookupObjectRef<parcelCloud>("cloud");
+        // parcels.info();
+
+        Info << " Nparcels= " << parcels.nParcels() << endl;
+
+        // **************** *********************//////////
+
         runTime.write();
 
         // Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
@@ -168,14 +212,14 @@ int main(int argc, char *argv[])
         //     << nl << endl;
     }
 
-    Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-            << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-            << nl << endl;
+    Info << "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
+         << "  ClockTime = " << runTime.elapsedClockTime() << " s"
+         << nl << endl;
 
-    Info<< "End\n" << endl;
+    Info << "End\n"
+         << endl;
 
     return 0;
 }
-
 
 // ************************************************************************* //

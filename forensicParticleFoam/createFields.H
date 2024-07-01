@@ -170,19 +170,6 @@ word nuevotiempo =  timeDirs[indexTime2].name();
 
 Info << " tiempo " << nuevotiempo << endl;
 
-//  Create New Vector U2 and read it form directory at time 2
-// volVectorField* U2p = new volVectorField
-// (
-//     IOobject
-//     (
-//         "U",        
-//         nuevotiempo,
-//         mesh,
-//         IOobject::MUST_READ,
-//         IOobject::NO_WRITE
-//     ),
-//     mesh
-// );
 
 volVectorField U2
 (
@@ -196,6 +183,69 @@ volVectorField U2
     ),
     mesh
 );
+
+
+/// particles field
+
+//- Return the particle volume fraction field
+// virtual const tmp<volScalarField> theta() const = 0;
+//- Return the particle mass fraction field
+// virtual const tmp<volScalarField> alpha() const = 0;
+
+volScalarField PMvf
+(
+    IOobject
+    (
+        "PMvf",
+        runTime.timeName(),
+        mesh,        
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar(dimless, Zero) 
+);
+volScalarField PMvfavg
+(
+    IOobject
+    (
+        "PMvfavg",
+        runTime.timeName(),
+        mesh,        
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar(dimless, Zero) 
+);
+volScalarField PMconc
+(
+    IOobject
+    (
+        "PMconc",
+        runTime.timeName(),
+        mesh,        
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar(dimMass/(dimLength*dimLength*dimLength), Zero) 
+);
+volScalarField PMconcavg
+(
+    IOobject
+    (
+        "PMconcavg",
+        runTime.timeName(),
+        mesh,        
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh,
+    dimensionedScalar(dimMass/(dimLength*dimLength*dimLength), Zero) 
+);
+
+scalar timestat=0;
 
 
 //Info << "U2 = " << U2[icellexample] << endl; 

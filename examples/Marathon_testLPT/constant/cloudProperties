@@ -27,7 +27,7 @@ solution
     {
         rho             cell;
         U               cellPoint;
-        thermo:mu        cell;
+        thermo:mu       cell;
     }
 
     integrationSchemes
@@ -38,7 +38,7 @@ solution
 
 constantProperties
 {
-    rho0            1000;
+    rho0            3000; // denisty PM
 }
 
 subModels
@@ -56,11 +56,11 @@ subModels
         {
             type            patchInjection; 
             massTotal       0;
-            SOI             0; 
-            duration        14400;           
+            SOI             30000; 
+            duration        40000;           
             parcelBasisType fixed;
-            nParticle       1;
-            parcelsPerSecond 4;
+            nParticle       100;
+            parcelsPerSecond 5;
             patchName       tank1;
             U0              (0. 0. 0.5);
             flowRateProfile constant 1;
@@ -77,11 +77,11 @@ subModels
         {
             type            patchInjection; 
             massTotal       0;
-            SOI             300; 
-            duration        14400;           
+            SOI             30000; 
+            duration        40000;           
             parcelBasisType fixed;
-            nParticle       1;
-            parcelsPerSecond 17;
+            nParticle       100;
+            parcelsPerSecond 19;
             patchName       tank2;
             U0              (0. 0. 0.5);
             flowRateProfile constant 1;
@@ -98,11 +98,11 @@ subModels
         {
             type            patchInjection; 
             massTotal       0;
-            SOI             0; 
-            duration        14400;           
+            SOI             23400; 
+            duration        40000;           
             parcelBasisType fixed;
-            nParticle       1;
-            parcelsPerSecond 25;
+            nParticle       100;
+            parcelsPerSecond 29;
             patchName       containment;
             U0              (0. 0. 0.01);
             flowRateProfile constant 1;
@@ -118,13 +118,38 @@ subModels
 
     }
 
+    //dispersionModel stochasticDispersionRAS;
     dispersionModel none;
+    
 
-    patchInteractionModel standardWallInteraction;
+    patchInteractionModel localInteraction;
 
-    standardWallInteractionCoeffs
+    localInteractionCoeffs
     {
-        type stick;
+    patches
+    (
+        "(tank1|tank2|containment)"
+        {
+            type  stick;
+        }
+
+        "(north|south|east|west)"
+        {
+            type escape;
+        }
+
+        "(terrain|bottom)"
+        {
+            type stick;
+        }
+
+        top
+        {
+            type escape;
+        }
+
+    );
+
     }
 
 
