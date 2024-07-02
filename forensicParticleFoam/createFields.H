@@ -80,17 +80,17 @@ surfaceScalarField phi
 );
 
 
-// Info<< "Creating turbulence model\n" << endl;
-// autoPtr<compressible::momentumTransportModel> turbulence
-// (
-//     compressible::momentumTransportModel::New
-//     (
-//         rho,
-//         U,
-//         phi,
-//         thermo
-//     )
-// );
+Info<< "Creating turbulence model\n" << endl;
+autoPtr<compressible::momentumTransportModel> turbulence
+(
+    compressible::momentumTransportModel::New
+    (
+        rho,
+        U,
+        phi,
+        thermo
+    )
+);
 
 Info<< "Constructing clouds" << endl;
 parcelCloudList clouds(rho, U, thermo.mu(), g);
@@ -184,13 +184,7 @@ volVectorField U2
     mesh
 );
 
-
-/// particles field
-
-//- Return the particle volume fraction field
-// virtual const tmp<volScalarField> theta() const = 0;
-//- Return the particle mass fraction field
-// virtual const tmp<volScalarField> alpha() const = 0;
+/// particles scalar fields
 
 volScalarField PMvf
 (

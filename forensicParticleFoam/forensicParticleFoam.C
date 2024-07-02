@@ -150,19 +150,19 @@ int main(int argc, char *argv[])
         }
 
         // debug
-        Info << "U1 = " << U1[icellexample] << endl;
-        Info << "U  = " << U[icellexample] << endl;
-        Info << "U2 = " << U2[icellexample] << endl;
+        // Info << "U1 = " << U1[icellexample] << endl;
+        // Info << "U  = " << U[icellexample] << endl;
+        // Info << "U2 = " << U2[icellexample] << endl;
 
-        // scalar Zref = 1800;
-        // // Info<< " Adjust top BC at z >  " << Zref << endl;
-        // vector Uw = vector(0.0, 0.0, 1.0);
-        // forAll(mesh.C(),cellI)
-        // {
-        //    const scalar z = mesh.C()[cellI].z();
-        //    if (z > Zref)
-        //     { U[cellI] = Uw;}
-        // }
+        scalar Zref = 1900;
+       // Info<< " Adjust top BC at z >  " << Zref << endl;
+        vector Uw = vector(0.0, 0.0, 1.0);
+        forAll(mesh.C(),cellI)
+        {
+           const scalar z = mesh.C()[cellI].z();
+           if (z > Zref)
+            { U[cellI][2] = 1.0;}
+        }
 
         // ---------------------------------------------------------//
 
@@ -180,10 +180,9 @@ int main(int argc, char *argv[])
         timestat+=dt;        
 
         const scalar rhopm = 3000.0;
-        const scalar normfactor = 30e6; // real particles per parcel
+        //const scalar normfactor = 30e6; // real particles per parcel
         
-
-        PMvf = clouds.theta()*normfactor;
+        PMvf = clouds.theta();
         forAll(mesh.C(), cellI)
         {
             PMvfavg[cellI]   += PMvf[cellI]*dt;         // no units
@@ -201,7 +200,7 @@ int main(int argc, char *argv[])
         parcelCloud &parcels = mesh.template lookupObjectRef<parcelCloud>("cloud");
         // parcels.info();
 
-        Info << " Nparcels= " << parcels.nParcels() << endl;
+        Info << " Nparcels= " << t << "  " <<  parcels.nParcels() << endl;
 
         // **************** *********************//////////
 

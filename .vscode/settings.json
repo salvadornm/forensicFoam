@@ -97,6 +97,7 @@
         "__memory": "cpp",
         "forensicFoam.C": "cpp",
         "rhoParticleFoam.C": "cpp",
-        "forensicParticleFoam.C": "cpp"
+        "forensicParticleFoam.C": "cpp",
+        "myStochasticModel.C": "cpp"
     }
 }

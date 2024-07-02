@@ -779,6 +779,9 @@ ndot_PM = mdot_PM/mass_PM
 ndot1 = ndot_PM
 
 print(" TANK1 mdot(PM) ",mdot_PM," [kg/s] or ",ndot_PM/1e6," M parts/sec")
+print(" Vtank1 = ",Vtank1," [m/s] flow rate ",mdot_PM/rho_PM," [m3/s]")
+print(" TOTAL mass=",mdot_PM*15*2600,"[kg]")
+
 
 mdot_PM = C_PM*Vtank2*Areatank2
 ndot_PM = mdot_PM/mass_PM
@@ -786,6 +789,9 @@ ndot_PM = mdot_PM/mass_PM
 ndot2 = ndot_PM
 
 print(" TANK2 mdot(PM) ",mdot_PM," [kg/s] or ",ndot_PM/1e6," M parts/sec")
+print(" Vtank2 = ",Vtank2, "[m/s] flow rate ",mdot_PM/rho_PM," [m3/s]")
+print(" TOTAL mass=",mdot_PM*15*2600,"[kg]")
+
 
 mdot_PM = C_PM*Vcont*Areacont
 ndot_PM = mdot_PM/mass_PM
@@ -793,6 +799,17 @@ ndot_PM = mdot_PM/mass_PM
 ndot3 = ndot_PM
 
 print(" CONT mdot(PM) ",mdot_PM," [kg/s] or ",ndot_PM/1e6," M parts/sec")
+print(" Vcont = ",Vcont, " [m/s] flow rate ",mdot_PM/rho_PM," [m3/s]")
+print(" TOTAL mass=",mdot_PM*17*2600,"[kg]")
+Qcont=mdot_PM/rho_PM
+
+
+nparcelTOT=1e9
+
+mass_pp = mdot_PM/ndot_PM
+
+print(" mass per partcile=",mass_pp)
+
 
 parcel_pers = 100
 tank1parts = 5
@@ -806,14 +823,113 @@ normfactor = ndot1/(tank1parts*parcel_pers)
 print(" normfactor =",normfactor/1e6, " MILLION ")
 
 
-print(" N1 = ",ndot1/parcel_pers)
-print(" N2 = ",ndot2/parcel_pers)
-print(" N3 = ",ndot3/parcel_pers)
+print(" N1 = ",ndot1/parcel_pers," or ",ndot1/nparcelTOT)
+print(" N2 = ",ndot2/parcel_pers," or ",ndot2/nparcelTOT)
+print(" N3 = ",ndot3/parcel_pers," or ",ndot3/nparcelTOT)
 
-print(" tank1parts = ",tank1parts, " parce per s =",parcel_pers)
+print(" tank1parts = ",tank1parts, " parcel per s =",parcel_pers)
 print(" N1 (for openfoam)= ",ndot1/(parcel_pers*normfactor))
 print(" N2 (for openfoam)= ",ndot2/(parcel_pers*normfactor))
 print(" N3 (for openfoam)= ",ndot3/(parcel_pers*normfactor))
+
+op_n1 =  ndot1/(parcel_pers*normfactor)
+op_n2 =  ndot2/(parcel_pers*normfactor)
+op_n3 =  ndot3/(parcel_pers*normfactor)
+
+
+# file
+dt = 500
+ndt = 200
+time0 = 6.5*3600     #  6:30 starts fire and sim 
+time1 = 8.5*3600     #  8:30  
+time2 = 13.5*3600    #  13:30
+time3 = 23.5*3600    #  23:30
+
+timestart = time0
+
+C1  = 1.0/(time1**2-time0**2)
+C2  = -C1*time0**2
+D1  = 1.0/(time2**(-2)-time3**(-2) )
+D2  = -D1*time3**(-2) 
+
+with open("containment.dat","w") as file:
+
+   for i in range(ndt):
+      time = i*dt + timestart
+      x = C1*time**2 + C2
+      if time > time1:
+         x = 1
+      if time > time2:
+         x =  D1*time**(-2) + D2
+      if time > time3:
+         x = 0   
+
+      x = x*Qcont
+
+      #print(time,x,file=file)         
+      print("( ",time,x," ) ",file=file)         
+      
+
+
+               
+
+time0 = 8.5*3600     #  8:30   start fire
+time1 = 10.5*3600    #  10:30  end growth phase
+time2 = 13.5*3600    #  13:30  star decay
+time3 = 23.5*3600    #  23:30  end
+
+C1  = 1.0/(time1**2-time0**2)
+C2  = -C1*time0**2
+D1  = 1.0/(time2**(-2)-time3**(-2) )
+D2  = -D1*time3**(-2) 
+
+with open("tank1.dat","w") as file:
+
+   for i in range(ndt):
+      time = i*dt + timestart   
+      x = 0
+      if time > time0:
+         x = C1*time**2 + C2
+      if time > time1:
+         x = 1
+      if time > time2:
+         x =  D1*time**(-2) + D2
+      if time > time3:
+         x = 0   
+
+      x = x*op_n1   
+      #  print(time,x,file=file)     
+      print("( ",time,x," ) ",file=file)         
+    
+
+#--------------------------------------------               
+time0 = 8.5*3600 + 300     #  8:35   start fire
+time1 = 10.5*3600          #  10:30  end growth phase
+time2 = 13.5*3600          #  13:30  star decay
+time3 = 23.5*3600          #  23:30  end
+
+C1  = 1.0/(time1**2-time0**2)
+C2  = -C1*time0**2
+D1  = 1.0/(time2**(-2)-time3**(-2) )
+D2  = -D1*time3**(-2) 
+
+with open("tank2.dat","w") as file:
+
+   for i in range(ndt):
+      time = i*dt + timestart   
+      x = 0
+      if time > time0:
+         x = C1*time**2 + C2
+      if time > time1:
+         x = 1
+      if time > time2:
+         x =  D1*time**(-2) + D2
+      if time > time3:
+         x = 0   
+      
+      x = x*op_n2          
+      # print(time,x,file=file)         
+      print("( ",time,x," ) ",file=file)      
 
 
 print(" ---------------------------------------------------")
