@@ -802,7 +802,7 @@ print(" CONT mdot(PM) ",mdot_PM," [kg/s] or ",ndot_PM/1e6," M parts/sec")
 print(" Vcont = ",Vcont, " [m/s] flow rate ",mdot_PM/rho_PM," [m3/s]")
 print(" TOTAL mass=",mdot_PM*17*2600,"[kg]")
 Qcont=mdot_PM/rho_PM
-
+print(" time=",17*3600," [sec]")
 
 nparcelTOT=1e9
 
@@ -864,10 +864,8 @@ with open("containment.dat","w") as file:
       if time > time3:
          x = 0   
 
-      x = x*Qcont
-
       #print(time,x,file=file)         
-      print("( ",time,x," ) ",file=file)         
+      print("( ",time-timestart,x," ) ",file=file)         
       
 
 
@@ -897,7 +895,6 @@ with open("tank1.dat","w") as file:
       if time > time3:
          x = 0   
 
-      x = x*op_n1   
       #  print(time,x,file=file)     
       print("( ",time,x," ) ",file=file)         
     
@@ -927,10 +924,17 @@ with open("tank2.dat","w") as file:
       if time > time3:
          x = 0   
       
-      x = x*op_n2          
       # print(time,x,file=file)         
       print("( ",time,x," ) ",file=file)      
 
+# ndt= 20
+# dt = 1.0/ndt
+# with open("func.dat","w") as file:
+
+#    for i in range(ndt):
+#       time = i*dt
+#       x = time**2
+#       print("( ",time,x," ) ",file=file)   
 
 print(" ---------------------------------------------------")
 
