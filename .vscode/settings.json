@@ -98,6 +98,7 @@
         "forensicFoam.C": "cpp",
         "rhoParticleFoam.C": "cpp",
         "forensicParticleFoam.C": "cpp",
-        "myStochasticModel.C": "cpp"
+        "myStochasticModel.C": "cpp",
+        "forensicWindFoamLPT.C": "cpp"
     }
 }
