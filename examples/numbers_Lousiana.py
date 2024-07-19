@@ -781,7 +781,7 @@ ndot1 = ndot_PM
 print(" TANK1 mdot(PM) ",mdot_PM," [kg/s] or ",ndot_PM/1e6," M parts/sec")
 print(" Vtank1 = ",Vtank1," [m/s] flow rate ",mdot_PM/rho_PM," [m3/s]")
 print(" TOTAL mass=",mdot_PM*15*2600,"[kg]")
-
+print(" time=",15*3600," [sec]")
 
 mdot_PM = C_PM*Vtank2*Areatank2
 ndot_PM = mdot_PM/mass_PM
@@ -791,7 +791,7 @@ ndot2 = ndot_PM
 print(" TANK2 mdot(PM) ",mdot_PM," [kg/s] or ",ndot_PM/1e6," M parts/sec")
 print(" Vtank2 = ",Vtank2, "[m/s] flow rate ",mdot_PM/rho_PM," [m3/s]")
 print(" TOTAL mass=",mdot_PM*15*2600,"[kg]")
-
+print(" time=",15*3600," [sec]")
 
 mdot_PM = C_PM*Vcont*Areacont
 ndot_PM = mdot_PM/mass_PM
@@ -896,7 +896,7 @@ with open("tank1.dat","w") as file:
          x = 0   
 
       #  print(time,x,file=file)     
-      print("( ",time,x," ) ",file=file)         
+      print("( ",time-timestart,x," ) ",file=file)         
     
 
 #--------------------------------------------               
@@ -925,7 +925,7 @@ with open("tank2.dat","w") as file:
          x = 0   
       
       # print(time,x,file=file)         
-      print("( ",time,x," ) ",file=file)      
+      print("( ",time-timestart,x," ) ",file=file)      
 
 # ndt= 20
 # dt = 1.0/ndt

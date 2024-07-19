@@ -162,6 +162,10 @@ int main(int argc, char *argv[])
            const scalar z = mesh.C()[cellI].z();
            if (z > Zref)
             { U[cellI][2] = 1.0;}
+
+        //    if (z < 30) 
+        //     { U[cellI][2] = 1.0;}
+
         }
 
         // ---------------------------------------------------------//
